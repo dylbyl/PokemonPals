@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -29,19 +30,28 @@ namespace PokemonPals.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Pokemons
+        [Authorize]
         public async Task<IActionResult> Dex()
         {
             ApplicationUser currentUser = await GetCurrentUserAsync();
 
             PokemonAndCaughtPokemonViewModel model = new PokemonAndCaughtPokemonViewModel();
             List<Pokemon> allPokemon = await _context.Pokemon.ToListAsync();
-            List<CaughtPokemon> userCaughtPokemon = await _context.CaughtPokemon
+            List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
                                                             .Where(cp => cp.UserId == currentUser.Id)
+                                                            .Where(cp => cp.isHidden == false)
                                                             .ToListAsync();
 
             model.AllPokemon = allPokemon;
+            foreach(CaughtPokemon caughtPokemon in listOfUserCaughtPokemon)
+            {
+                if (!model.PokemonCaught.Contains(caughtPokemon.PokemonId))
+                {
+                    model.PokemonCaught.Add(caughtPokemon.PokemonId);
+                }
+            }
 
-            return View(allPokemon);
+            return View(model);
         }
 
         // GET: Pokemons/Details/5
@@ -60,113 +70,6 @@ namespace PokemonPals.Controllers
             }
 
             return View(pokemon);
-        }
-
-        // GET: Pokemons/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Pokemons/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,PokedexNumber,Height,Weight,Type1,Type2,DefaultSpriteURL,RBSpriteURL,OfficialArtURL,HP,Attack,Defense,SpecialAttack,SpecialDefense,Speed")] Pokemon pokemon)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(pokemon);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(pokemon);
-        }
-
-        // GET: Pokemons/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var pokemon = await _context.Pokemon.FindAsync(id);
-            if (pokemon == null)
-            {
-                return NotFound();
-            }
-            return View(pokemon);
-        }
-
-        // POST: Pokemons/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,PokedexNumber,Height,Weight,Type1,Type2,DefaultSpriteURL,RBSpriteURL,OfficialArtURL,HP,Attack,Defense,SpecialAttack,SpecialDefense,Speed")] Pokemon pokemon)
-        {
-            if (id != pokemon.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(pokemon);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PokemonExists(pokemon.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(pokemon);
-        }
-
-        // GET: Pokemons/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var pokemon = await _context.Pokemon
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pokemon == null)
-            {
-                return NotFound();
-            }
-
-            return View(pokemon);
-        }
-
-        // POST: Pokemons/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var pokemon = await _context.Pokemon.FindAsync(id);
-            _context.Pokemon.Remove(pokemon);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool PokemonExists(int id)
-        {
-            return _context.Pokemon.Any(e => e.Id == id);
         }
 
         public async Task AddOnePokemon(int PokedexNumber)
