@@ -27,30 +27,40 @@ namespace PokemonPals.Controllers
             _userManager = userManager;
         }
 
+        //A method for fetching the currently logged in user
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-        // GET: Pokemons
+        // A method for fetching all Pokemon in the database, and returning a view of them
         [Authorize]
         public async Task<IActionResult> Dex()
         {
+            //Gets the currently logged in user
             ApplicationUser currentUser = await GetCurrentUserAsync();
 
+            //Creates a new view model for the Dex view
             PokemonAndCaughtPokemonViewModel model = new PokemonAndCaughtPokemonViewModel();
-            List<Pokemon> allPokemon = await _context.Pokemon.ToListAsync();
+
+            //Fetches all Pokemon entries in the database and adds them to a list
+            model.AllPokemon = await _context.Pokemon.ToListAsync();
+
+            //Gets a list of all the Pokemon the current user has caught (and have not been soft-deleted)
             List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
                                                             .Where(cp => cp.UserId == currentUser.Id)
                                                             .Where(cp => cp.isHidden == false)
                                                             .ToListAsync();
 
-            model.AllPokemon = allPokemon;
+            //Loops through the list of Pokemon the user owns, so that we can get their IDs
             foreach(CaughtPokemon caughtPokemon in listOfUserCaughtPokemon)
             {
+                //If this list does not already contain the species of Pokemon we're currently looking at...
                 if (!model.PokemonCaught.Contains(caughtPokemon.PokemonId))
                 {
+                    //...add it to the list of IDs
                     model.PokemonCaught.Add(caughtPokemon.PokemonId);
                 }
             }
 
+            //Returns a view with our view model
             return View(model);
         }
 
