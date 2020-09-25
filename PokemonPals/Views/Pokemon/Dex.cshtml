@@ -1,0 +1,31 @@
+﻿@model IEnumerable<PokemonPals.Models.Pokemon>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Pokedex</h1>
+
+<div>
+    @foreach (var item in Model)
+    {
+        <img src=@item.RBSpriteURL />
+        string capitalName = char.ToUpper(item.Name[0]) + item.Name.Substring(1);
+
+        string threeDigitId = "";
+        if (item.PokedexNumber < 10)
+        {
+            threeDigitId = $"00{item.PokedexNumber}";
+        }
+        else if (item.PokedexNumber < 100)
+        {
+            threeDigitId = $"0{item.PokedexNumber}";
+        }
+        else
+        {
+            threeDigitId = $"{item.PokedexNumber}";
+        }
+        string entry = threeDigitId + " - " + capitalName;
+        <a asp-action="Details" asp-route-id="@item.Id">@entry</a>
+    }
+</div>
