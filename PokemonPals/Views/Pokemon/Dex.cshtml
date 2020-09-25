@@ -1,31 +1,61 @@
-﻿@model IEnumerable<PokemonPals.Models.Pokemon>
+﻿@model PokemonPals.Models.ViewModels.PokemonAndCaughtPokemonViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Pokedex</h1>
+<div class="dex-header">
+    <h1 class="dex-header">Pokedex</h1>
+    @{
+        decimal totalCount = 80;
+        if (Model.PokemonCaught != null)
+        {
+            totalCount = Model.PokemonCaught.Count();
+        }
+        decimal totalPercent = (totalCount / Model.AllPokemon.Count()) * 100;
+        string percentString = totalPercent.ToString("0.##");
 
-<div>
-    @foreach (var item in Model)
+        <div class="dex-progress-bar">
+            <div class="dex-progress-completion" style="width:@percentString%"></div>
+            <p class="dex-progress-text">@totalCount of @Model.AllPokemon.Count() caught // @percentString%</p>
+        </div>
+    }
+</div>
+
+<div class="dex-container">
+    @foreach (var item in Model.AllPokemon)
     {
-        <a asp-action="Details" asp-route-id="@item.Id"><img src=@item.RBSpriteURL /></a>
-        string capitalName = char.ToUpper(item.Name[0]) + item.Name.Substring(1);
+        string caughtClass = "";
+        if (Model.PokemonCaught != null)
+        {
+            if (Model.PokemonCaught.Contains(item.Id))
+            {
+                caughtClass = "dex-caught";
+            }
+        }
+        <container class="dex-card @caughtClass">
+            <a asp-action="Details" asp-route-id="@item.Id"><img class="dex-img" src=@item.RBSpriteURL /></a>
+            @{
+                string capitalName = char.ToUpper(item.Name[0]) + item.Name.Substring(1);
 
-        string threeDigitId = "";
-        if (item.PokedexNumber < 10)
-        {
-            threeDigitId = $"00{item.PokedexNumber}";
-        }
-        else if (item.PokedexNumber < 100)
-        {
-            threeDigitId = $"0{item.PokedexNumber}";
-        }
-        else
-        {
-            threeDigitId = $"{item.PokedexNumber}";
-        }
-        string entry = threeDigitId + " - " + capitalName;
-        <a asp-action="Details" asp-route-id="@item.Id">@entry</a>
+                string threeDigitId = "";
+                if (item.PokedexNumber < 10)
+                {
+                    threeDigitId = $"00{item.PokedexNumber}";
+                }
+                else if (item.PokedexNumber < 100)
+                {
+                    threeDigitId = $"0{item.PokedexNumber}";
+                }
+                else
+                {
+                    threeDigitId = $"{item.PokedexNumber}";
+                }
+            }
+            <div>
+                <a asp-action="Details" asp-route-id="@item.Id">@threeDigitId <br /> @capitalName</a> <br />
+                <img class="pokeball-img" src="../wwwroot/pokeball.png" />
+            </div>
+        </container>
     }
 </div>

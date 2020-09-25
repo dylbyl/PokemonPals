@@ -39,6 +39,7 @@ namespace PokemonPals.Controllers
             List<Pokemon> allPokemon = await _context.Pokemon.ToListAsync();
             List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
                                                             .Where(cp => cp.UserId == currentUser.Id)
+                                                            .Where(cp => cp.isHidden == false)
                                                             .ToListAsync();
 
             model.AllPokemon = allPokemon;
@@ -50,7 +51,7 @@ namespace PokemonPals.Controllers
                 }
             }
 
-            return View(allPokemon);
+            return View(model);
         }
 
         // GET: Pokemons/Details/5
