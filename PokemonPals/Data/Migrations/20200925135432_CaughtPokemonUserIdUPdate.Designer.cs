@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PokemonPals.Data;
 
 namespace PokemonPals.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200925135432_CaughtPokemonUserIdUPdate")]
+    partial class CaughtPokemonUserIdUPdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,10 +238,6 @@ namespace PokemonPals.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Avatar");
@@ -264,11 +262,14 @@ namespace PokemonPals.Data.Migrations
                     b.Property<string>("Nickname")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("PokemonId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isFavorite")
                         .HasColumnType("bit");
@@ -286,9 +287,9 @@ namespace PokemonPals.Data.Migrations
 
                     b.HasIndex("GenderId");
 
-                    b.HasIndex("PokemonId");
+                    b.HasIndex("OwnerId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PokemonId");
 
                     b.ToTable("CaughtPokemon");
                 });
@@ -479,15 +480,15 @@ namespace PokemonPals.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PokemonPals.Models.ApplicationUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
                     b.HasOne("PokemonPals.Models.Pokemon", "Pokemon")
                         .WithMany()
                         .HasForeignKey("PokemonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("PokemonPals.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("PokemonPals.Models.ApplicationUser", b =>

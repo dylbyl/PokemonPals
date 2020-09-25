@@ -9,7 +9,7 @@
 <div>
     @foreach (var item in Model)
     {
-        <img src=@item.RBSpriteURL />
+        <a asp-action="Details" asp-route-id="@item.Id"><img src=@item.RBSpriteURL /></a>
         string capitalName = char.ToUpper(item.Name[0]) + item.Name.Substring(1);
 
         string threeDigitId = "";
