@@ -4,105 +4,161 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+@{
+    string capitalName = char.ToUpper(Model.Name[0]) + Model.Name.Substring(1);
+    string threeDigitId = "";
+    if (Model.PokedexNumber < 10)
+    {
+        threeDigitId = $"00{Model.PokedexNumber}";
+    }
+    else if (Model.PokedexNumber < 100)
+    {
+        threeDigitId = $"0{Model.PokedexNumber}";
+    }
+    else
+    {
+        threeDigitId = $"{Model.PokedexNumber}";
+    }
+    <div class="dex-details-header">
+        <h1 class="dex-details-header">@threeDigitId - @capitalName</h1>
+    </div>
+}
 
-<div>
-    <h4>Pokemon</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PokedexNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PokedexNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Height)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Height)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Weight)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Weight)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type1)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type1)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type2)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type2)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DefaultSpriteURL)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DefaultSpriteURL)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RBSpriteURL)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RBSpriteURL)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OfficialArtURL)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OfficialArtURL)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HP)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HP)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Attack)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Attack)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Defense)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Defense)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SpecialAttack)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SpecialAttack)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SpecialDefense)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SpecialDefense)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Speed)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Speed)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col">
+        <img class="dex-details-official-img" src=@Model.OfficialArtURL />
+    </div>
+
+    <div class="dex-details-info col">
+        @*Beginning of Info column (types, height, weight)*@
+        <div class="dex-details-large-card col">
+            <h4 class="dex-details-red-text">Info</h4>
+            <hr />
+            <div class="row">
+                @*Type column*@
+                <div class="dex-details-small-card col">
+                    <dl class="row">
+                        <dt class="dex-details-red-text col-sm-8">
+                            Type 1
+                        </dt>
+                        <dd class="col-sm-4">
+                            @{string capitalType1 = char.ToUpper(Model.Type1[0]) + Model.Type1.Substring(1); }
+                            @capitalType1
+                        </dd>
+                    </dl>
+                    @{
+                        if (Model.Type2 != null)
+                        {
+                            <dl class="row">
+                                <dt class="dex-details-red-text col-sm-8">
+                                    Type 2
+                                </dt>
+                                <dd class="col-sm-4">
+                                    @{string capitalType2 = char.ToUpper(Model.Type2[0]) + Model.Type2.Substring(1); }
+                                    @capitalType2
+                                </dd>
+                            </dl>
+                        }
+                    }
+                </div>
+                @*End of Type column, beginning of Height/Weight column*@
+                <div class="dex-details-small-card col">
+                    <dl class="row">
+                        <dt class="dex-details-red-text col-sm-8">
+                            @Html.DisplayNameFor(model => model.Height)
+                        </dt>
+                        <dd class="col-sm-4">
+                            @{
+                                double realHeight = Model.Height * 0.1;
+                            }
+                            @realHeight.ToString("0.##") m
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="dex-details-red-text col-sm-8">
+                            @Html.DisplayNameFor(model => model.Weight)
+                        </dt>
+                        <dd class="col-sm-4">
+                            @{
+                                double realWeight = Model.Weight * 0.1;
+                            }
+                            @realWeight.ToString("0.##") kg
+                        </dd>
+                    </dl>
+                </div>
+                @*End of Height/Weight column*@
+            </div>
+        </div>
+        @*End of Info column*@
+
+        @*Stat column*@
+        <div class="dex-details-large-card col">
+            <h4 class="dex-details-red-text">Stats</h4>
+            <hr />
+            <div class="row">
+                @*First stats column*@
+                <div class="dex-details-small-card col">
+                    <dl class="row">
+                        <dt class="dex-details-red-text col-sm-8">
+                            @Html.DisplayNameFor(model => model.HP)
+                        </dt>
+                        <dd class="col-sm-2">
+                            @Html.DisplayFor(model => model.HP)
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="dex-details-red-text col-sm-8">
+                            @Html.DisplayNameFor(model => model.Attack)
+                        </dt>
+                        <dd class="col-sm-2">
+                            @Html.DisplayFor(model => model.Attack)
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="dex-details-red-text col-sm-8">
+                            @Html.DisplayNameFor(model => model.Defense)
+                        </dt>
+                        <dd class="col-sm-2">
+                            @Html.DisplayFor(model => model.Defense)
+                        </dd>
+                    </dl>
+                </div>
+                @*End of first stat column, beginning of second*@
+                <div class="dex-details-small-card col">
+                    <dl class="row">
+                        <dt class="dex-details-red-text col-sm-8">
+                            Special Attack
+                        </dt>
+                        <dd class="col-sm-2">
+                            @Html.DisplayFor(model => model.SpecialAttack)
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="dex-details-red-text col-sm-8">
+                            Special Defense
+                        </dt>
+                        <dd class="col-sm-2">
+                            @Html.DisplayFor(model => model.SpecialDefense)
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt class="dex-details-red-text col-sm-8">
+                            @Html.DisplayNameFor(model => model.Speed)
+                        </dt>
+                        <dd class="col-sm-2">
+                            @Html.DisplayFor(model => model.Speed)
+                        </dd>
+                    </dl>
+                </div>
+                @*End of second stat column*@
+            </div>
+        </div>
+
+
+        @*End of Stats column*@
+    </div>
+    @*End of entire Info box*@
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Dex">Back to Dex</a>
 </div>

@@ -236,6 +236,10 @@ namespace PokemonPals.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Avatar");
@@ -260,14 +264,11 @@ namespace PokemonPals.Data.Migrations
                     b.Property<string>("Nickname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OwnerId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("PokemonId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("isFavorite")
                         .HasColumnType("bit");
@@ -285,9 +286,9 @@ namespace PokemonPals.Data.Migrations
 
                     b.HasIndex("GenderId");
 
-                    b.HasIndex("OwnerId");
-
                     b.HasIndex("PokemonId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CaughtPokemon");
                 });
@@ -342,6 +343,7 @@ namespace PokemonPals.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DefaultSpriteURL")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Defense")
@@ -354,15 +356,18 @@ namespace PokemonPals.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OfficialArtURL")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PokedexNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("RBSpriteURL")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SpecialAttack")
@@ -375,6 +380,7 @@ namespace PokemonPals.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Type1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type2")
@@ -473,15 +479,15 @@ namespace PokemonPals.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PokemonPals.Models.ApplicationUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId");
-
                     b.HasOne("PokemonPals.Models.Pokemon", "Pokemon")
                         .WithMany()
                         .HasForeignKey("PokemonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("PokemonPals.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("PokemonPals.Models.ApplicationUser", b =>

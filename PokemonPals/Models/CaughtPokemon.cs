@@ -15,7 +15,7 @@ namespace PokemonPals.Models
         public int PokemonId { get; set; }
         public Pokemon Pokemon { get; set; }
         public string UserId { get; set; }
-        public ApplicationUser Owner { get; set; }
+        public ApplicationUser User { get; set; }
         public string Nickname { get; set; }
         public int Level { get; set; }
         public int CP { get; set; }

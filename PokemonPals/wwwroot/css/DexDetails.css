@@ -1,0 +1,36 @@
+﻿.dex-details-header {
+    color: #e0332a;
+    text-align: center;
+}
+
+.dex-details-info{
+    min-width: 50%;
+}
+
+.dex-details-official-img {
+    display: block;
+    margin: auto;
+}
+
+.dex-details-large-card {
+    border-radius: 8px;
+    background-color: #ffe8e7;
+    margin: 1em;
+    padding: 1em;
+    padding-bottom: 0;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.dex-details-small-card {
+    border-radius: 8px;
+    background-color: #ff9f9a;
+    margin: 1em;
+    margin-top: 0;
+    padding: 1em;
+    padding-bottom: 0;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.dex-details-red-text {
+    color: #e0332a;
+}

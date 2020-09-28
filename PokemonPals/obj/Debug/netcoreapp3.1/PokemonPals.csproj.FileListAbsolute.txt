@@ -190,3 +190,12 @@ C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\PokemonPals.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\PokemonPals.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\Pokemon\Dex.cshtml.g.cs
+C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Register.cshtml.g.cs
+C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_ViewImports.cshtml.g.cs
+C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
+C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\CaughtPokemon\Create.cshtml.g.cs
+C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\CaughtPokemon\Delete.cshtml.g.cs
+C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\CaughtPokemon\Details.cshtml.g.cs
+C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\CaughtPokemon\Edit.cshtml.g.cs
+C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\CaughtPokemon\Index.cshtml.g.cs

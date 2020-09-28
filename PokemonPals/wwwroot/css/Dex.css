@@ -1,0 +1,92 @@
+﻿.dex-card {
+    border-radius: 8px;
+    background-color: #ffe8e7;
+    margin: 1em;
+    text-align: center;
+    padding: 1em;
+    width: 12%;
+    height: 10%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    min-width: 100px;
+}
+
+.dex-caught {
+    background-color: #ff9f9a;
+}
+
+.dex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    margin: auto;
+    justify-content: center;
+}
+
+a {
+    color: #e3362c;
+}
+
+a:hover{
+    color: black;
+}
+
+.dex-img {
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 2px;
+    background-color: white;
+    width: 80%;
+    height: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.pokeball-img {
+    padding: 2px;
+    background-color: white;
+    width: 80%;
+    height: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.dex-header {
+    color: #e0332a;
+    text-align: center;
+}
+
+.dex-progress-bar {
+    width: 80%;
+    height: 40px;
+    background-color: #ffe8e7;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+    display: grid;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.dex-progress-bar > * {
+    grid-column-start: 1;
+    grid-row-start: 1;
+}
+
+.dex-progress-completion {
+    background-color: #ff9f9a;
+    height: 40px;
+    border-radius: 8px;
+}
+
+.dex-progress-text {
+    color: black;
+    line-height: 40px;
+}
