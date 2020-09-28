@@ -65,6 +65,9 @@ namespace PokemonPals.Controllers
                                     .Where(p => p.Id == id)
                                     .FirstOrDefaultAsync();
 
+            model.PokemonToAdd = new CaughtPokemon();
+            model.PokemonToAdd.PokemonId = id;
+
             List<Gender> gendersToSelectFrom = await _context.Gender.ToListAsync();
 
             model.Genders = new SelectList(gendersToSelectFrom, "Id", "Name").ToList();
@@ -77,18 +80,30 @@ namespace PokemonPals.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,isOwned,PokemonId,UserId,Nickname,Level,CP,GenderId,isHidden,isFavorite,isTradeOpen")] CaughtPokemon caughtPokemon)
+        public async Task<IActionResult> Create(CaughtPokemonCreateViewModel model)
         {
+            ModelState.Remove("User");
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
-                _context.Add(caughtPokemon);
+                ApplicationUser currentUser = await GetCurrentUserAsync();
+                model.PokemonToAdd.UserId = currentUser.Id;
+
+                _context.Add(model.PokemonToAdd);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Dex", "Pokemon");
             }
-            ViewData["GenderId"] = new SelectList(_context.Gender, "Id", "Name", caughtPokemon.GenderId);
-            ViewData["PokemonId"] = new SelectList(_context.Pokemon, "Id", "DefaultSpriteURL", caughtPokemon.PokemonId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", caughtPokemon.UserId);
-            return View(caughtPokemon);
+
+            CaughtPokemonCreateViewModel failedModel = new CaughtPokemonCreateViewModel();
+            failedModel.SelectedPokemon = await _context.Pokemon
+                                    .Where(p => p.Id == model.SelectedPokemon.Id)
+                                    .FirstOrDefaultAsync();
+
+            List<Gender> gendersToSelectFrom = await _context.Gender.ToListAsync();
+
+            failedModel.Genders = new SelectList(gendersToSelectFrom, "Id", "Name").ToList();
+
+            return View(failedModel);
         }
 
         // GET: CaughtPokemons/Edit/5
