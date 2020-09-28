@@ -1,75 +1,81 @@
-﻿@model PokemonPals.Models.CaughtPokemon
+﻿@model PokemonPals.Models.ViewModels.CaughtPokemonCreateViewModel;
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+@{
+    string capitalName = char.ToUpper(Model.SelectedPokemon.Name[0]) + Model.SelectedPokemon.Name.Substring(1);
+    string anOrA = "a";
+    if (capitalName[0] == 'A' || capitalName[0] == 'E' || capitalName[0] == 'I' || capitalName[0] == 'O' || capitalName[0] == 'U')
+    {
+        anOrA = "an";
+    }
+    else
+    {
+        anOrA = "a";
+    }
 
-<h4>CaughtPokemon</h4>
-<hr />
+<div class="caught-create-header">
+    <img class="caught-create-image" src="@Model.SelectedPokemon.RBSpriteURL" />
+    <h1>You caught @anOrA @capitalName!!</h1>
+</div>
+}
+
 <div class="row">
+    <div class="col-md-4">
+    </div>
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isOwned" /> @Html.DisplayNameFor(model => model.isOwned)
-                </label>
+            <input type="hidden" asp-for="PokemonToAdd.PokemonId" selected=SelectedPokemon.Id/>
+            <div class="form-group">
+                <label asp-for="PokemonToAdd.Nickname" class="control-label"></label>
+                <input asp-for="PokemonToAdd.Nickname" class="form-control" />
+                <span asp-validation-for="PokemonToAdd.Nickname" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PokemonId" class="control-label"></label>
-                <select asp-for="PokemonId" class ="form-control" asp-items="ViewBag.PokemonId"></select>
+                <label asp-for="PokemonToAdd.Level" class="control-label"></label>
+                <input asp-for="PokemonToAdd.Level" class="form-control" />
+                <span asp-validation-for="PokemonToAdd.Level" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+                <label asp-for="PokemonToAdd.CP" class="control-label"></label>
+                <input asp-for="PokemonToAdd.CP" class="form-control" />
+                <span asp-validation-for="PokemonToAdd.CP" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Nickname" class="control-label"></label>
-                <input asp-for="Nickname" class="form-control" />
-                <span asp-validation-for="Nickname" class="text-danger"></span>
+                <label asp-for="PokemonToAdd.GenderId" class="control-label"></label>
+                <select asp-for="PokemonToAdd.GenderId" class="form-control" asp-items="Model.Genders"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Level" class="control-label"></label>
-                <input asp-for="Level" class="form-control" />
-                <span asp-validation-for="Level" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CP" class="control-label"></label>
-                <input asp-for="CP" class="form-control" />
-                <span asp-validation-for="CP" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GenderId" class="control-label"></label>
-                <select asp-for="GenderId" class ="form-control" asp-items="ViewBag.GenderId"></select>
+                <label asp-for="PokemonToAdd.DateCaught" class="control-label">Date Caught</label>
+                <input asp-for="PokemonToAdd.DateCaught" class="form-control" />
+                <span asp-validation-for="PokemonToAdd.DateCaught" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isHidden" /> @Html.DisplayNameFor(model => model.isHidden)
+                    <input class="form-check-input" asp-for="PokemonToAdd.isFavorite" /> This Pokemon is a Favorite
                 </label>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isFavorite" /> @Html.DisplayNameFor(model => model.isFavorite)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isTradeOpen" /> @Html.DisplayNameFor(model => model.isTradeOpen)
+                    <input class="form-check-input" asp-for="PokemonToAdd.isTradeOpen" /> I'd be open to trading this Pokemon
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn caught-create-btn" />
             </div>
         </form>
     </div>
+    <div class="col-md-4">
+    </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-controller="Pokemon" asp-action="Dex">Back to Dex</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

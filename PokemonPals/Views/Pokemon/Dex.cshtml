@@ -54,7 +54,7 @@
             }
             <div>
                 <a asp-action="Details" asp-route-id="@item.Id">@threeDigitId <br /> @capitalName</a> <br />
-                <img class="pokeball-img" src="../wwwroot/pokeball.png" />
+                <a asp-controller="CaughtPokemon" asp-action="Create" asp-route-id="@item.Id"><img class="pokeball-img" src="../wwwroot/pokeball.png" /></a>
             </div>
         </container>
     }
