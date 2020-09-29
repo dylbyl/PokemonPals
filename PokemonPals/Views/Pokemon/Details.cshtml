@@ -177,17 +177,19 @@
                     @if (PokemonInCollection.Nickname != null)
                     {
                         <h4 class="dex-details-red-text row">
-                            @PokemonInCollection.Nickname - Level @PokemonInCollection.Level,
-                            @PokemonInCollection.CP CP
+                            @PokemonInCollection.Nickname - Level @PokemonInCollection.Level
                         </h4>
                     }
                     else
                     {
                         <h4 class="dex-details-red-text row">
-                            @capitalName - Level @PokemonInCollection.Level,
-                            @PokemonInCollection.CP CP
+                            @capitalName - Level @PokemonInCollection.Level
                         </h4>
                     }
+
+                <div class="dex-details-red-text row">
+                    @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
+                </div>
 
                     <div class="row">
                         <div class="col-sm-7">
@@ -201,7 +203,7 @@
                                 <p>Open to Trade</p>
                             }
                         </div>
-                        <div class="dex-details-right-align col-sm-5">
+                        <div class="col-sm-5">
                             <p>Caught on @PokemonInCollection.DateCaught.ToShortDateString()</p>
                         </div>
                     </div>
