@@ -65,7 +65,6 @@ namespace PokemonPals.Controllers
                                     .Where(p => p.Id == id)
                                     .FirstOrDefaultAsync();
 
-            model.PokemonToAdd = new CaughtPokemon();
             model.PokemonToAdd.PokemonId = id;
 
             List<Gender> gendersToSelectFrom = await _context.Gender.ToListAsync();
