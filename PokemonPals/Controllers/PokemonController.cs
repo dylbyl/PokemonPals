@@ -65,6 +65,7 @@ namespace PokemonPals.Controllers
         }
 
         // GET: Pokemons/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -72,14 +73,27 @@ namespace PokemonPals.Controllers
                 return NotFound();
             }
 
-            var pokemon = await _context.Pokemon
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+
+            CaughtPokemonDexViewModel model = new CaughtPokemonDexViewModel();
+
+            model.SelectedPokemon = await _context.Pokemon
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (pokemon == null)
+
+            model.UserCollection = await _context.CaughtPokemon
+                                        .Include(cp => cp.Pokemon)
+                                        .Include(cp => cp.Gender)
+                                        .Where(cp => cp.PokemonId == id)
+                                        .Where(cp => cp.UserId == currentUser.Id)
+                                        .Where(cp => cp.isHidden == false)
+                                        .ToListAsync();
+            
+            if (model.SelectedPokemon == null)
             {
                 return NotFound();
             }
 
-            return View(pokemon);
+            return View(model);
         }
 
         public async Task AddOnePokemon(int PokedexNumber)

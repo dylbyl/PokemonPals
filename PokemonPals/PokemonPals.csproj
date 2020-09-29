@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\pokeball.png" />
+    <None Include="wwwroot\images\pokeball.png" />
   </ItemGroup>
 
 </Project>
