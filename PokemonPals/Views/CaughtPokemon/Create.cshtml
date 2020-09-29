@@ -16,17 +16,17 @@
         anOrA = "a";
     }
 
-<div class="global-header">
-    <img class="sprite-img" src="@Model.SelectedPokemon.RBSpriteURL" />
-    <h1>You caught @anOrA @capitalName!!</h1>
-</div>
+    <div class="global-header">
+        <img class="sprite-img" src="@Model.SelectedPokemon.RBSpriteURL" />
+        <h1>You caught @anOrA @capitalName!!</h1>
+    </div>
 }
 
 <div class="row">
     <div class="caught-create-info-card col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PokemonToAdd.PokemonId" selected=SelectedPokemon.Id/>
+            <input type="hidden" asp-for="PokemonToAdd.PokemonId" selected=SelectedPokemon.Id />
             <div class="form-group">
                 <label asp-for="PokemonToAdd.Nickname" class="control-label"></label>
                 <input asp-for="PokemonToAdd.Nickname" class="form-control" />
@@ -51,6 +51,13 @@
                 <input asp-for="PokemonToAdd.DateCaught" class="form-control" />
                 <span asp-validation-for="PokemonToAdd.DateCaught" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="PokemonToAdd.Comment" class="control-label"></label>
+                <textarea asp-for="PokemonToAdd.Comment" class="form-control" rows="4" placeholder="Insert searchable comments for this Pokemon">
+                    
+                </textarea>
+                <span asp-validation-for="PokemonToAdd.Comment" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="PokemonToAdd.isFavorite" /> This Pokemon is a Favorite
@@ -68,10 +75,10 @@
     </div>
 </div>
 
-    <div class="back-btn-container">
-        <a asp-controller="Pokemon" asp-action="Dex">Back to Dex</a>
-    </div>
+<div class="back-btn-container">
+    <a asp-controller="Pokemon" asp-action="Dex">Back to Dex</a>
+</div>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

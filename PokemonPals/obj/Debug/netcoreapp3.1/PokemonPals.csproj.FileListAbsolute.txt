@@ -178,10 +178,7 @@ C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\PokemonPals.genruntimeconfig.cache
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
-C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\Pokemon\Create.cshtml.g.cs
-C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\Pokemon\Delete.cshtml.g.cs
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\Pokemon\Details.cshtml.g.cs
-C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\Pokemon\Edit.cshtml.g.cs
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\bin\Debug\netcoreapp3.1\AttributeRouting.Web.Mvc.dll
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\bin\Debug\netcoreapp3.1\AttributeRouting.dll
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\bin\Debug\netcoreapp3.1\AttributeRouting.Web.dll
@@ -198,4 +195,4 @@ C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\CaughtPokemon\Delete.cshtml.g.cs
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\CaughtPokemon\Details.cshtml.g.cs
 C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\CaughtPokemon\Edit.cshtml.g.cs
-C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\CaughtPokemon\Index.cshtml.g.cs
+C:\Users\NewForce\workspace\bangazon\capstone\PokemonPals\obj\Debug\netcoreapp3.1\Razor\Views\CaughtPokemon\Collection.cshtml.g.cs

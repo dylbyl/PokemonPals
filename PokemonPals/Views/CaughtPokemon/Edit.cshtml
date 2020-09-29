@@ -1,77 +1,89 @@
-﻿@model PokemonPals.Models.CaughtPokemon
+﻿@model PokemonPals.Models.ViewModels.CaughtPokemonEditViewModel;
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+@{
+    string capitalName = char.ToUpper(Model.SelectedCaughtPokemon.Pokemon.Name[0]) + Model.SelectedCaughtPokemon.Pokemon.Name.Substring(1);
 
-<h4>CaughtPokemon</h4>
-<hr />
+    <div class="global-header">
+        <img class="sprite-img" src="@Model.SelectedCaughtPokemon.Pokemon.RBSpriteURL" />
+        @if (Model.SelectedCaughtPokemon.Nickname != null)
+        {
+            <h1 class="dex-details-red-text">
+                Want to edit @Model.SelectedCaughtPokemon.Nickname?
+            </h1>
+        }
+        else
+        {
+            <h1 class="dex-details-red-text">
+                Want to edit @capitalName?
+            </h1>
+        }
+    </div>
+}
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="caught-create-info-card col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isOwned" /> @Html.DisplayNameFor(model => model.isOwned)
-                </label>
+            <input type="hidden" asp-for="SelectedCaughtPokemon.Id" />
+            <input type="hidden" asp-for="SelectedCaughtPokemon.UserId" />
+            <div class="form-group">
+                <label asp-for="SelectedCaughtPokemon.PokemonId" class="control-label">Species</label>
+                <select asp-for="SelectedCaughtPokemon.PokemonId" class="form-control" asp-items="Model.AllPokemon"></select>
             </div>
             <div class="form-group">
-                <label asp-for="PokemonId" class="control-label"></label>
-                <select asp-for="PokemonId" class="form-control" asp-items="ViewBag.PokemonId"></select>
-                <span asp-validation-for="PokemonId" class="text-danger"></span>
+                <label asp-for="SelectedCaughtPokemon.Nickname" class="control-label"></label>
+                <input asp-for="SelectedCaughtPokemon.Nickname" class="form-control" />
+                <span asp-validation-for="SelectedCaughtPokemon.Nickname" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
+                <label asp-for="SelectedCaughtPokemon.Level" class="control-label"></label>
+                <input asp-for="SelectedCaughtPokemon.Level" class="form-control" />
+                <span asp-validation-for="SelectedCaughtPokemon.Level" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Nickname" class="control-label"></label>
-                <input asp-for="Nickname" class="form-control" />
-                <span asp-validation-for="Nickname" class="text-danger"></span>
+                <label asp-for="SelectedCaughtPokemon.CP" class="control-label"></label>
+                <input asp-for="SelectedCaughtPokemon.CP" class="form-control" />
+                <span asp-validation-for="SelectedCaughtPokemon.CP" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Level" class="control-label"></label>
-                <input asp-for="Level" class="form-control" />
-                <span asp-validation-for="Level" class="text-danger"></span>
+                <label asp-for="SelectedCaughtPokemon.GenderId" class="control-label">Gender</label>
+                <select asp-for="SelectedCaughtPokemon.GenderId" class="form-control" asp-items="Model.Genders"></select>
             </div>
             <div class="form-group">
-                <label asp-for="CP" class="control-label"></label>
-                <input asp-for="CP" class="form-control" />
-                <span asp-validation-for="CP" class="text-danger"></span>
+                <label asp-for="SelectedCaughtPokemon.DateCaught" class="control-label">Date Caught</label>
+                <input asp-for="SelectedCaughtPokemon.DateCaught" class="form-control" />
+                <span asp-validation-for="SelectedCaughtPokemon.DateCaught" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GenderId" class="control-label"></label>
-                <select asp-for="GenderId" class="form-control" asp-items="ViewBag.GenderId"></select>
-                <span asp-validation-for="GenderId" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isHidden" /> @Html.DisplayNameFor(model => model.isHidden)
-                </label>
+                <label asp-for="SelectedCaughtPokemon.Comment" class="control-label"></label>
+                <textarea asp-for="SelectedCaughtPokemon.Comment" class="form-control" rows="4" placeholder="Insert searchable comments for this Pokemon">
+                    
+                </textarea>
+                <span asp-validation-for="SelectedCaughtPokemon.Comment" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isFavorite" /> @Html.DisplayNameFor(model => model.isFavorite)
+                    <input class="form-check-input" asp-for="SelectedCaughtPokemon.isFavorite" /> This Pokemon is a Favorite
                 </label>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="isTradeOpen" /> @Html.DisplayNameFor(model => model.isTradeOpen)
+                    <input class="form-check-input" asp-for="SelectedCaughtPokemon.isTradeOpen" /> I'd be willing to trade this Pokemon away
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn global-btn" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="back-btn-container">
+    <a asp-controller="Pokemon" asp-action="Dex">Back to Dex</a>
 </div>
 
 @section Scripts {

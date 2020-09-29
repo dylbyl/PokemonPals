@@ -38,6 +38,7 @@ namespace PokemonPals.Models
             CP = 0;
             GenderId = 0;
             Nickname = null;
+            Comment = null;
             isFavorite = false;
             isTradeOpen = false;
             DateCaught = DateTime.Now;
