@@ -161,10 +161,13 @@
 @*End of Image, Height/Weight, and Stats section. Beginning of User Collection*@
 
 @{
-    if (Model.UserCollection != null)
+    if (Model.UserCollection.Count > 0)
     {
         <hr />
         <div class="dex-details-collection">
+            <div class="global-header">
+                <h2>@capitalName You've Caught</h2>
+            </div>
             @foreach (CaughtPokemon PokemonInCollection in Model.UserCollection)
             {
             <div class="pokemon-card row">
@@ -220,6 +223,6 @@
 
 }
 
-<div>
+<div class="back-btn-container">
     <a asp-action="Dex">Back to Dex</a>
 </div>

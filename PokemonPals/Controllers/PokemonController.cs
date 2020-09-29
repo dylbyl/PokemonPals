@@ -83,6 +83,7 @@ namespace PokemonPals.Controllers
             model.UserCollection = await _context.CaughtPokemon
                                         .Include(cp => cp.Pokemon)
                                         .Include(cp => cp.Gender)
+                                        .Where(cp => cp.PokemonId == id)
                                         .Where(cp => cp.UserId == currentUser.Id)
                                         .Where(cp => cp.isHidden == false)
                                         .ToListAsync();

@@ -1,14 +1,4 @@
-﻿.caught-create-btn {
-    background-color: #e0332a;
-    color: #ffe8e7;
-}
-
-.caught-create-btn:hover {
-    background-color: #ff9f9a;
-    color: white;
-}
-
-.caught-create-info-card {
+﻿.caught-create-info-card {
     border-radius: 8px;
     background-color: #ffe8e7;
     margin: auto;
