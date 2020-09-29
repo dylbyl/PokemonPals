@@ -10,5 +10,6 @@ namespace PokemonPals.Models.ViewModels
         public Pokemon SelectedPokemon { get; set; } = new Pokemon();
 
         public List<CaughtPokemon> UserCollection { get; set; } = new List<CaughtPokemon>();
+        
     }
 }

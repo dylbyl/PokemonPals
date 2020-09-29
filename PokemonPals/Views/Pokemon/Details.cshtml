@@ -170,53 +170,78 @@
             </div>
             @foreach (CaughtPokemon PokemonInCollection in Model.UserCollection)
             {
-            <div class="pokemon-card row">
-                <div class="col">
-                    <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
-                </div>
-
-
-                <div class="col-sm-10">
-                    @if (PokemonInCollection.Nickname != null)
-                    {
-                        <h4 class="dex-details-red-text row">
-                            @PokemonInCollection.Nickname - Level @PokemonInCollection.Level
-                        </h4>
-                    }
-                    else
-                    {
-                        <h4 class="dex-details-red-text row">
-                            @capitalName - Level @PokemonInCollection.Level
-                        </h4>
-                    }
-
-                <div class="dex-details-red-text row">
-                    @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
-                </div>
-
-                    <div class="row">
-                        <div class="col-sm-7">
-                            @if (PokemonInCollection.isFavorite == true)
-                            {
-                                <p>Favorite</p>
-                            }
-
-                            @if (PokemonInCollection.isTradeOpen == true)
-                            {
-                                <p>Open to Trade</p>
-                            }
-                        </div>
-                        <div class="col-sm-5">
-                            <p>Caught on @PokemonInCollection.DateCaught.ToShortDateString()</p>
-                        </div>
+                <div class="pokemon-card row">
+                    <div class="col">
+                        <a asp-controller="CaughtPokemon" asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
+                            <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
+                        </a>
                     </div>
 
-                    <div class="row">
-                        @*Comments go here, update the data model first*@
+
+                    <div class="col-sm-10">
+                        @if (PokemonInCollection.Nickname != null)
+                        {
+                            <h4 class="dex-details-red-text row">
+                                <a asp-controller="CaughtPokemon" asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
+                                    @PokemonInCollection.Nickname
+                                </a>
+
+                            </h4>
+                        }
+                        else
+                        {
+                            <h4 class="dex-details-red-text row">
+                                <a asp-controller="CaughtPokemon" asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
+                                    @capitalName 
+                                </a>
+
+                            </h4>
+                        }
+                    <div class="dex-details-red-text row">
+                        Level @PokemonInCollection.Level
                     </div>
 
+                        <div class="dex-details-red-text row">
+                            @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-7">
+                                @{
+                                    string favoriteOrTradeString = "";
+
+                                    if (PokemonInCollection.isFavorite == true)
+                                    {
+                                        favoriteOrTradeString += "Favorite";
+                                    }
+                                    if (PokemonInCollection.isFavorite == true && PokemonInCollection.isTradeOpen == true)
+                                    {
+                                        favoriteOrTradeString += ", ";
+                                    }
+                                    if (PokemonInCollection.isTradeOpen == true)
+                                    {
+                                        favoriteOrTradeString += "Open to Trade";
+                                    }
+                                    @favoriteOrTradeString
+                                }
+                            </div>
+                            <div class="col-sm-5">
+                                Caught on @PokemonInCollection.DateCaught.ToShortDateString()
+                            </div>
+                        </div>
+
+                        @{
+                            if (PokemonInCollection.Comment != null)
+                            {
+
+                                <div class="dex-details-white-text row">
+                                    @PokemonInCollection.Comment
+                                </div>
+                            }
+                        }
+
+                    </div>
                 </div>
-            </div>
             }
         </div>
     }

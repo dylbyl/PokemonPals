@@ -71,7 +71,10 @@ a {
     padding: 1em;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     min-width: 100px;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
     .pokemon-card:hover {

@@ -42,6 +42,10 @@
     color: #e0332a;
 }
 
+.dex-details-white-text {
+    color: white;
+}
+
 dl.row{
     margin-top: 5px;
     margin-bottom: 5px;

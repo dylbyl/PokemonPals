@@ -1,0 +1,89 @@
+﻿@model IEnumerable<PokemonPals.Models.CaughtPokemon>
+
+@{
+    ViewData["Title"] = "Collection";
+}
+
+
+<div class="global-header">
+    <h1>Collection</h1>
+    <p>@Model.Count() total caught</p>
+</div>
+
+<hr />
+
+<div class="collection-container">
+    @{
+        if (Model.Count() == 0)
+        {
+            <h4>You don't have any Pokemon! Go <a asp-controller="Pokemon" asp-action="Dex">add some!</a></h4>
+        }
+        foreach (CaughtPokemon PokemonInCollection in Model)
+        {
+            string capitalName = char.ToUpper(PokemonInCollection.Pokemon.Name[0]) + PokemonInCollection.Pokemon.Name.Substring(1);
+
+            <div class="collection-card">
+                <a asp-controller="CaughtPokemon" asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
+                    <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
+                </a>
+
+                <div class="collection-card-info">
+                    @if (PokemonInCollection.Nickname != null)
+                    {
+                        <h4 class="dex-details-red-text row">
+                            <a asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
+                                @PokemonInCollection.Nickname
+                            </a>
+                        </h4>
+                    }
+                    else
+                    {
+                        <h4 class="dex-details-red-text row">
+                            <a asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
+                                @capitalName
+                            </a>
+                        </h4>
+                    }
+                    <div class="dex-details-red-text row">Level @PokemonInCollection.Level</div>
+
+                    <div class="dex-details-red-text row">
+                        @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
+                    </div>
+
+                    <div class="row">
+                        @{
+                            string favoriteOrTradeString = "";
+
+                            if (PokemonInCollection.isFavorite == true)
+                            {
+                                favoriteOrTradeString += "Favorite";
+                            }
+                            if (PokemonInCollection.isFavorite == true && PokemonInCollection.isTradeOpen == true)
+                            {
+                                favoriteOrTradeString += ", ";
+                            }
+                            if (PokemonInCollection.isTradeOpen == true)
+                            {
+                                favoriteOrTradeString += "Open to Trade";
+                            }
+                            @favoriteOrTradeString
+                        }
+                    </div>
+                    <div class="row">
+                        Caught on @PokemonInCollection.DateCaught.ToShortDateString()
+                    </div>
+
+                    @{
+                        if (PokemonInCollection.Comment != null)
+                        {
+
+                            <div class="dex-details-white-text row">
+                                @PokemonInCollection.Comment
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
