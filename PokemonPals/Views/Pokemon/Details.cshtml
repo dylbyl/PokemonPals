@@ -190,30 +190,44 @@
                         </h4>
                     }
 
-                <div class="dex-details-red-text row">
-                    @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
-                </div>
+                    <div class="dex-details-red-text row">
+                        @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
+                    </div>
 
                     <div class="row">
                         <div class="col-sm-7">
-                            @if (PokemonInCollection.isFavorite == true)
-                            {
-                                <p>Favorite</p>
-                            }
+                            @{
+                                string favoriteOrTradeString = "";
 
-                            @if (PokemonInCollection.isTradeOpen == true)
-                            {
-                                <p>Open to Trade</p>
+                                if (PokemonInCollection.isFavorite == true)
+                                {
+                                    favoriteOrTradeString += "Favorite";
+                                }
+                                if (PokemonInCollection.isFavorite == true && PokemonInCollection.isTradeOpen == true)
+                                {
+                                    favoriteOrTradeString += ", ";
+                                }
+                                if (PokemonInCollection.isTradeOpen == true)
+                                {
+                                    favoriteOrTradeString += "Open to Trade";
+                                }
+                                @favoriteOrTradeString
                             }
                         </div>
                         <div class="col-sm-5">
-                            <p>Caught on @PokemonInCollection.DateCaught.ToShortDateString()</p>
+                            Caught on @PokemonInCollection.DateCaught.ToShortDateString()
                         </div>
                     </div>
 
-                    <div class="row">
-                        @*Comments go here, update the data model first*@
-                    </div>
+                    @{
+                        if (PokemonInCollection.Comment != null)
+                        {
+
+                            <div class="dex-details-white-text row">
+                                @PokemonInCollection.Comment
+                            </div>
+                        }
+                    }
 
                 </div>
             </div>

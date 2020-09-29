@@ -30,10 +30,19 @@ namespace PokemonPals.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: CaughtPokemons
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Collection()
         {
-            var applicationDbContext = _context.CaughtPokemon.Include(c => c.Gender).Include(c => c.Pokemon).Include(c => c.User);
-            return View(await applicationDbContext.ToListAsync());
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+
+            List<CaughtPokemon> FullUserCollection = await _context.CaughtPokemon
+                                                            .Include(cp => cp.Pokemon)
+                                                            .Include(cp => cp.Gender)
+                                                            .Where(cp => cp.UserId == currentUser.Id)
+                                                            .Where(cp => cp.isHidden == false)
+                                                            .OrderBy(cp => cp.PokemonId)
+                                                            .ToListAsync();
+
+            return View(FullUserCollection);
         }
 
         // GET: CaughtPokemons/Details/5
