@@ -23,22 +23,28 @@
             string capitalName = char.ToUpper(PokemonInCollection.Pokemon.Name[0]) + PokemonInCollection.Pokemon.Name.Substring(1);
 
             <div class="collection-card">
-                <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
+                <a asp-controller="CaughtPokemon" asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
+                    <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
+                </a>
 
                 <div class="collection-card-info">
                     @if (PokemonInCollection.Nickname != null)
                     {
                         <h4 class="dex-details-red-text row">
-                            @PokemonInCollection.Nickname
+                            <a asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
+                                @PokemonInCollection.Nickname
+                            </a>
                         </h4>
                     }
                     else
                     {
                         <h4 class="dex-details-red-text row">
-                            @capitalName
+                            <a asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
+                                @capitalName
+                            </a>
                         </h4>
                     }
-                <h4 class="dex-details-red-text row">Level @PokemonInCollection.Level</h4>
+                    <div class="dex-details-red-text row">Level @PokemonInCollection.Level</div>
 
                     <div class="dex-details-red-text row">
                         @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace PokemonPals.Models.ViewModels
 {
-    public class CaughtPokemonCreateViewModel
+    public class CaughtPokemonEditViewModel
     {
-        public Pokemon SelectedPokemon { get; set; } = new Pokemon();
+        public CaughtPokemon SelectedCaughtPokemon { get; set; } = new CaughtPokemon();
         public List<SelectListItem> Genders { get; set; } = new List<SelectListItem>();
-        public CaughtPokemon PokemonToAdd { get; set; } = new CaughtPokemon();
+        public List<SelectListItem> AllPokemon { get; set; } = new List<SelectListItem>();
     }
 }

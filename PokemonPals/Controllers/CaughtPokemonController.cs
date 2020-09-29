@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -30,6 +31,7 @@ namespace PokemonPals.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: CaughtPokemons
+        [Authorize]
         public async Task<IActionResult> Collection()
         {
             ApplicationUser currentUser = await GetCurrentUserAsync();
@@ -67,6 +69,7 @@ namespace PokemonPals.Controllers
         }
 
         // GET: CaughtPokemons/Create
+        [Authorize]
         public async Task<IActionResult> Create(int id)
         {
             CaughtPokemonCreateViewModel model = new CaughtPokemonCreateViewModel();
@@ -92,6 +95,12 @@ namespace PokemonPals.Controllers
         {
             ModelState.Remove("User");
             ModelState.Remove("UserId");
+            ModelState.Remove("SelectedPokemon.Name");
+            ModelState.Remove("SelectedPokemon.Type1");
+            ModelState.Remove("SelectedPokemon.RBSpriteURL");
+            ModelState.Remove("SelectedPokemon.OfficialArtURL");
+            ModelState.Remove("SelectedPokemon.DefaultSpriteURL");
+
             if (ModelState.IsValid)
             {
                 ApplicationUser currentUser = await GetCurrentUserAsync();
@@ -115,6 +124,7 @@ namespace PokemonPals.Controllers
         }
 
         // GET: CaughtPokemons/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -122,15 +132,44 @@ namespace PokemonPals.Controllers
                 return NotFound();
             }
 
-            var caughtPokemon = await _context.CaughtPokemon.FindAsync(id);
-            if (caughtPokemon == null)
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+
+            CaughtPokemonEditViewModel model = new CaughtPokemonEditViewModel();
+
+            model.SelectedCaughtPokemon = await _context.CaughtPokemon
+                                                .Include(cp => cp.Pokemon)
+                                                .Include(cp => cp.Gender)
+                                                .Where(cp => cp.UserId == currentUser.Id)
+                                                .Where(cp => cp.Id == id)
+                                                .FirstOrDefaultAsync();
+
+            if (model.SelectedCaughtPokemon == null)
             {
                 return NotFound();
             }
-            ViewData["GenderId"] = new SelectList(_context.Gender, "Id", "Name", caughtPokemon.GenderId);
-            ViewData["PokemonId"] = new SelectList(_context.Pokemon, "Id", "DefaultSpriteURL", caughtPokemon.PokemonId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", caughtPokemon.UserId);
-            return View(caughtPokemon);
+
+            List<Pokemon> allPokemonToSelectFrom = await _context.Pokemon
+                                                        .ToListAsync();
+
+            List<SelectListItem> lowercasePokemonChoices = new SelectList(allPokemonToSelectFrom, "Id", "Name", model.SelectedCaughtPokemon.PokemonId).ToList();
+
+            foreach (SelectListItem lowercaseChoice in lowercasePokemonChoices)
+            {
+                SelectListItem uppercaseChoice = new SelectListItem()
+                {
+                    Selected = lowercaseChoice.Selected,
+                    Text = char.ToUpper(lowercaseChoice.Text[0]) + lowercaseChoice.Text.Substring(1),
+                    Value = lowercaseChoice.Value
+                };
+
+                model.AllPokemon.Add(uppercaseChoice);
+            }
+
+            List<Gender> gendersToSelectFrom = await _context.Gender.ToListAsync();
+
+            model.Genders = new SelectList(gendersToSelectFrom, "Id", "Name", model.SelectedCaughtPokemon.GenderId).ToList();
+
+            return View(model);
         }
 
         // POST: CaughtPokemons/Edit/5
@@ -138,9 +177,9 @@ namespace PokemonPals.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,isOwned,PokemonId,UserId,Nickname,Level,CP,GenderId,isHidden,isFavorite,isTradeOpen")] CaughtPokemon caughtPokemon)
+        public async Task<IActionResult> Edit(int id, CaughtPokemonEditViewModel model)
         {
-            if (id != caughtPokemon.Id)
+            if (id != model.SelectedCaughtPokemon.Id)
             {
                 return NotFound();
             }
@@ -149,12 +188,12 @@ namespace PokemonPals.Controllers
             {
                 try
                 {
-                    _context.Update(caughtPokemon);
+                    _context.Update(model.SelectedCaughtPokemon);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CaughtPokemonExists(caughtPokemon.Id))
+                    if (!CaughtPokemonExists(model.SelectedCaughtPokemon.Id))
                     {
                         return NotFound();
                     }
@@ -163,12 +202,46 @@ namespace PokemonPals.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Collection));
             }
-            ViewData["GenderId"] = new SelectList(_context.Gender, "Id", "Name", caughtPokemon.GenderId);
-            ViewData["PokemonId"] = new SelectList(_context.Pokemon, "Id", "DefaultSpriteURL", caughtPokemon.PokemonId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", caughtPokemon.UserId);
-            return View(caughtPokemon);
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+
+            CaughtPokemonEditViewModel failedModel = new CaughtPokemonEditViewModel();
+
+            failedModel.SelectedCaughtPokemon = await _context.CaughtPokemon
+                                                .Include(cp => cp.Pokemon)
+                                                .Include(cp => cp.Gender)
+                                                .Where(cp => cp.UserId == currentUser.Id)
+                                                .Where(cp => cp.Id == id)
+                                                .FirstOrDefaultAsync();
+
+            if (failedModel.SelectedCaughtPokemon == null)
+            {
+                return NotFound();
+            }
+
+            List<Pokemon> allPokemonToSelectFrom = await _context.Pokemon
+                                                        .ToListAsync();
+
+            List<SelectListItem> lowercasePokemonChoices = new SelectList(allPokemonToSelectFrom, "Id", "Name", failedModel.SelectedCaughtPokemon.PokemonId).ToList();
+
+            foreach (SelectListItem lowercaseChoice in lowercasePokemonChoices)
+            {
+                SelectListItem uppercaseChoice = new SelectListItem()
+                {
+                    Selected = lowercaseChoice.Selected,
+                    Text = char.ToUpper(lowercaseChoice.Text[0]) + lowercaseChoice.Text.Substring(1),
+                    Value = lowercaseChoice.Value
+                };
+
+                failedModel.AllPokemon.Add(uppercaseChoice);
+            }
+
+            List<Gender> gendersToSelectFrom = await _context.Gender.ToListAsync();
+
+            failedModel.Genders = new SelectList(gendersToSelectFrom, "Id", "Name", failedModel.SelectedCaughtPokemon.GenderId).ToList();
+
+            return View(failedModel);
         }
 
         // GET: CaughtPokemons/Delete/5
