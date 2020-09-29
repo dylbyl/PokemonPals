@@ -1,39 +1,39 @@
-﻿@model PokemonPals.Models.Pokemon
+﻿@model PokemonPals.Models.ViewModels.CaughtPokemonDexViewModel;
 
 @{
     ViewData["Title"] = "Details";
 }
 
 @{
-    string capitalName = char.ToUpper(Model.Name[0]) + Model.Name.Substring(1);
+    string capitalName = char.ToUpper(Model.SelectedPokemon.Name[0]) + Model.SelectedPokemon.Name.Substring(1);
     string threeDigitId = "";
-    if (Model.PokedexNumber < 10)
+    if (Model.SelectedPokemon.PokedexNumber < 10)
     {
-        threeDigitId = $"00{Model.PokedexNumber}";
+        threeDigitId = $"00{Model.SelectedPokemon.PokedexNumber}";
     }
-    else if (Model.PokedexNumber < 100)
+    else if (Model.SelectedPokemon.PokedexNumber < 100)
     {
-        threeDigitId = $"0{Model.PokedexNumber}";
+        threeDigitId = $"0{Model.SelectedPokemon.PokedexNumber}";
     }
     else
     {
-        threeDigitId = $"{Model.PokedexNumber}";
+        threeDigitId = $"{Model.SelectedPokemon.PokedexNumber}";
     }
-    <div class="dex-details-header">
-        <h1 class="dex-details-header">@threeDigitId - @capitalName</h1>
+    <div class="global-header">
+        <h1>@threeDigitId - @capitalName</h1>
+        <a asp-controller="CaughtPokemon" asp-action="Create" asp-route-id="@Model.SelectedPokemon.Id"><img class="pokeball-img" src="@Url.Content("~/images/pokeball.png")" /></a>
     </div>
 }
 
 <div class="row">
     <div class="col">
-        <img class="dex-details-official-img" src=@Model.OfficialArtURL />
+        <img class="dex-details-official-img" src=@Model.SelectedPokemon.OfficialArtURL />
     </div>
 
-    <div class="dex-details-info col">
+    <div class="col dex-details-info">
         @*Beginning of Info column (types, height, weight)*@
         <div class="dex-details-large-card col">
             <h4 class="dex-details-red-text">Info</h4>
-            <hr />
             <div class="row">
                 @*Type column*@
                 <div class="dex-details-small-card col">
@@ -42,19 +42,19 @@
                             Type 1
                         </dt>
                         <dd class="col-sm-4">
-                            @{string capitalType1 = char.ToUpper(Model.Type1[0]) + Model.Type1.Substring(1); }
+                            @{string capitalType1 = char.ToUpper(Model.SelectedPokemon.Type1[0]) + Model.SelectedPokemon.Type1.Substring(1); }
                             @capitalType1
                         </dd>
                     </dl>
                     @{
-                        if (Model.Type2 != null)
+                        if (Model.SelectedPokemon.Type2 != null)
                         {
                             <dl class="row">
                                 <dt class="dex-details-red-text col-sm-8">
                                     Type 2
                                 </dt>
                                 <dd class="col-sm-4">
-                                    @{string capitalType2 = char.ToUpper(Model.Type2[0]) + Model.Type2.Substring(1); }
+                                    @{string capitalType2 = char.ToUpper(Model.SelectedPokemon.Type2[0]) + Model.SelectedPokemon.Type2.Substring(1); }
                                     @capitalType2
                                 </dd>
                             </dl>
@@ -65,22 +65,22 @@
                 <div class="dex-details-small-card col">
                     <dl class="row">
                         <dt class="dex-details-red-text col-sm-8">
-                            @Html.DisplayNameFor(model => model.Height)
+                            @Html.DisplayNameFor(model => Model.SelectedPokemon.Height)
                         </dt>
                         <dd class="col-sm-4">
                             @{
-                                double realHeight = Model.Height * 0.1;
+                                double realHeight = Model.SelectedPokemon.Height * 0.1;
                             }
                             @realHeight.ToString("0.##") m
                         </dd>
                     </dl>
                     <dl class="row">
                         <dt class="dex-details-red-text col-sm-8">
-                            @Html.DisplayNameFor(model => model.Weight)
+                            @Html.DisplayNameFor(model => Model.SelectedPokemon.Weight)
                         </dt>
                         <dd class="col-sm-4">
                             @{
-                                double realWeight = Model.Weight * 0.1;
+                                double realWeight = Model.SelectedPokemon.Weight * 0.1;
                             }
                             @realWeight.ToString("0.##") kg
                         </dd>
@@ -94,32 +94,31 @@
         @*Stat column*@
         <div class="dex-details-large-card col">
             <h4 class="dex-details-red-text">Stats</h4>
-            <hr />
             <div class="row">
                 @*First stats column*@
                 <div class="dex-details-small-card col">
                     <dl class="row">
                         <dt class="dex-details-red-text col-sm-8">
-                            @Html.DisplayNameFor(model => model.HP)
+                            @Html.DisplayNameFor(model => Model.SelectedPokemon.HP)
                         </dt>
                         <dd class="col-sm-2">
-                            @Html.DisplayFor(model => model.HP)
+                            @Html.DisplayFor(model => Model.SelectedPokemon.HP)
                         </dd>
                     </dl>
                     <dl class="row">
                         <dt class="dex-details-red-text col-sm-8">
-                            @Html.DisplayNameFor(model => model.Attack)
+                            @Html.DisplayNameFor(model => Model.SelectedPokemon.Attack)
                         </dt>
                         <dd class="col-sm-2">
-                            @Html.DisplayFor(model => model.Attack)
+                            @Html.DisplayFor(model => Model.SelectedPokemon.Attack)
                         </dd>
                     </dl>
                     <dl class="row">
                         <dt class="dex-details-red-text col-sm-8">
-                            @Html.DisplayNameFor(model => model.Defense)
+                            @Html.DisplayNameFor(model => Model.SelectedPokemon.Defense)
                         </dt>
                         <dd class="col-sm-2">
-                            @Html.DisplayFor(model => model.Defense)
+                            @Html.DisplayFor(model => Model.SelectedPokemon.Defense)
                         </dd>
                     </dl>
                 </div>
@@ -130,7 +129,7 @@
                             Special Attack
                         </dt>
                         <dd class="col-sm-2">
-                            @Html.DisplayFor(model => model.SpecialAttack)
+                            @Html.DisplayFor(model => Model.SelectedPokemon.SpecialAttack)
                         </dd>
                     </dl>
                     <dl class="row">
@@ -138,15 +137,15 @@
                             Special Defense
                         </dt>
                         <dd class="col-sm-2">
-                            @Html.DisplayFor(model => model.SpecialDefense)
+                            @Html.DisplayFor(model => Model.SelectedPokemon.SpecialDefense)
                         </dd>
                     </dl>
                     <dl class="row">
                         <dt class="dex-details-red-text col-sm-8">
-                            @Html.DisplayNameFor(model => model.Speed)
+                            @Html.DisplayNameFor(model => Model.SelectedPokemon.Speed)
                         </dt>
                         <dd class="col-sm-2">
-                            @Html.DisplayFor(model => model.Speed)
+                            @Html.DisplayFor(model => Model.SelectedPokemon.Speed)
                         </dd>
                     </dl>
                 </div>
@@ -159,6 +158,66 @@
     </div>
     @*End of entire Info box*@
 </div>
+@*End of Image, Height/Weight, and Stats section. Beginning of User Collection*@
+
+@{
+    if (Model.UserCollection != null)
+    {
+        <hr />
+        <div class="dex-details-collection">
+            @foreach (CaughtPokemon PokemonInCollection in Model.UserCollection)
+            {
+            <div class="pokemon-card row">
+                <div class="col">
+                    <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
+                </div>
+
+
+                <div class="col-sm-10">
+                    @if (PokemonInCollection.Nickname != null)
+                    {
+                        <h4 class="dex-details-red-text row">
+                            @PokemonInCollection.Nickname - Level @PokemonInCollection.Level,
+                            @PokemonInCollection.CP CP
+                        </h4>
+                    }
+                    else
+                    {
+                        <h4 class="dex-details-red-text row">
+                            @capitalName - Level @PokemonInCollection.Level,
+                            @PokemonInCollection.CP CP
+                        </h4>
+                    }
+
+                    <div class="row">
+                        <div class="col-sm-7">
+                            @if (PokemonInCollection.isFavorite == true)
+                            {
+                                <p>Favorite</p>
+                            }
+
+                            @if (PokemonInCollection.isTradeOpen == true)
+                            {
+                                <p>Open to Trade</p>
+                            }
+                        </div>
+                        <div class="dex-details-right-align col-sm-5">
+                            <p>Caught on @PokemonInCollection.DateCaught.ToShortDateString()</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        @*Comments go here, update the data model first*@
+                    </div>
+
+                </div>
+            </div>
+            }
+        </div>
+    }
+
+}
+
 <div>
     <a asp-action="Dex">Back to Dex</a>
 </div>

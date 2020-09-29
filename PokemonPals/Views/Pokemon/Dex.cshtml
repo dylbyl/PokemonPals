@@ -4,8 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="dex-header">
-    <h1 class="dex-header">Pokedex</h1>
+<div class="global-header">
+    <h1>Pokedex</h1>
     @{
         decimal totalCount = 0;
         if (Model.PokemonCaught != null)
@@ -34,7 +34,7 @@
             }
         }
         <container class="dex-card @caughtClass">
-            <a asp-action="Details" asp-route-id="@item.Id"><img class="dex-img" src=@item.RBSpriteURL /></a>
+            <a asp-action="Details" asp-route-id="@item.Id"><img class="sprite-img" src=@item.RBSpriteURL /></a>
             @{
                 string capitalName = char.ToUpper(item.Name[0]) + item.Name.Substring(1);
 
@@ -54,7 +54,7 @@
             }
             <div>
                 <a asp-action="Details" asp-route-id="@item.Id">@threeDigitId <br /> @capitalName</a> <br />
-                <a asp-controller="CaughtPokemon" asp-action="Create" asp-route-id="@item.Id"><img class="pokeball-img" src="../wwwroot/pokeball.png" /></a>
+                <a asp-controller="CaughtPokemon" asp-action="Create" asp-route-id="@item.Id"><img class="pokeball-img" src="@Url.Content("~/images/pokeball.png")" /></a>
             </div>
         </container>
     }

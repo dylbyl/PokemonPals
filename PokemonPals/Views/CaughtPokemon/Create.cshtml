@@ -16,16 +16,14 @@
         anOrA = "a";
     }
 
-<div class="caught-create-header">
-    <img class="caught-create-image" src="@Model.SelectedPokemon.RBSpriteURL" />
+<div class="global-header">
+    <img class="sprite-img" src="@Model.SelectedPokemon.RBSpriteURL" />
     <h1>You caught @anOrA @capitalName!!</h1>
 </div>
 }
 
 <div class="row">
-    <div class="col-md-4">
-    </div>
-    <div class="col-md-4">
+    <div class="caught-create-info-card col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="PokemonToAdd.PokemonId" selected=SelectedPokemon.Id/>
@@ -45,7 +43,7 @@
                 <span asp-validation-for="PokemonToAdd.CP" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PokemonToAdd.GenderId" class="control-label"></label>
+                <label asp-for="PokemonToAdd.GenderId" class="control-label">Gender</label>
                 <select asp-for="PokemonToAdd.GenderId" class="form-control" asp-items="Model.Genders"></select>
             </div>
             <div class="form-group">
@@ -60,15 +58,13 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="PokemonToAdd.isTradeOpen" /> I'd be open to trading this Pokemon
+                    <input class="form-check-input" asp-for="PokemonToAdd.isTradeOpen" /> I'd be willing to trade this Pokemon away
                 </label>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn caught-create-btn" />
             </div>
         </form>
-    </div>
-    <div class="col-md-4">
     </div>
 </div>
 
