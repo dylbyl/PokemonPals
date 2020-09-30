@@ -4,78 +4,98 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+@{
+    string capitalName = char.ToUpper(Model.Pokemon.Name[0]) + Model.Pokemon.Name.Substring(1);
+    <div class="global-header">
+        <h1>Remove from your Collection?</h1>
+    </div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>CaughtPokemon</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.isOwned)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.isOwned)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Pokemon)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pokemon.DefaultSpriteURL)
-        </dd class>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
-        </dd class>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nickname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nickname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Level)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Level)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CP)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CP)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender.Name)
-        </dd class>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.isHidden)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.isHidden)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.isFavorite)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.isFavorite)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.isTradeOpen)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.isTradeOpen)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+    <div class="delete-container">
+
+        <div class="pokemon-card row">
+            <div class="col">
+                <img class="sprite-img" src=@Model.Pokemon.RBSpriteURL />
+            </div>
+
+
+            <div class="col-sm-10">
+                @if (Model.Nickname != null)
+                {
+                    <h4 class="dex-details-red-text row">
+                        @Model.Nickname
+                    </h4>
+                }
+                else
+                {
+                    <h4 class="dex-details-red-text row">
+                        @capitalName
+                    </h4>
+                }
+                <div class="dex-details-red-text row">
+                    Level @Model.Level
+                </div>
+
+                <div class="dex-details-red-text row">
+                    @Model.Gender.Name, @Model.CP CP
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-7">
+                        @{
+                            string favoriteOrTradeString = "";
+
+                            if (Model.isFavorite == true)
+                            {
+                                favoriteOrTradeString += "Favorite";
+                            }
+                            if (Model.isFavorite == true && Model.isTradeOpen == true)
+                            {
+                                favoriteOrTradeString += ", ";
+                            }
+                            if (Model.isTradeOpen == true)
+                            {
+                                favoriteOrTradeString += "Open to Trade";
+                            }
+                            @favoriteOrTradeString
+                        }
+                    </div>
+                    <div class="col-sm-5">
+                        Caught on @Model.DateCaught.ToShortDateString()
+                    </div>
+                </div>
+
+                @{
+                    if (Model.Comment != null)
+                    {
+
+                        <div class="dex-details-white-text row">
+                            @Model.Comment
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+
+        
+        @if(Model.isFavorite == true)
+        {
+            <div class="global-header">
+                <h2>WARNING!</h2>
+                <br />
+                <h3>This critter is marked as a Favorite! Are you sure you want to delete it?</h3>
+            </div>
+        }
+
+        <br />
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete" class="btn global-btn" />
+        </form>
+    </div>
+}
+
+
+<div class="back-btn-container">
+    <a asp-action="Dex">Back to Dex</a>
 </div>
