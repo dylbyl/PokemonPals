@@ -10,6 +10,7 @@
     border-radius: 8px;
     background-color: #ff9f9a;
     padding: 1em;
+    flex-basis: 18%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     margin: 1em;
 }
@@ -25,4 +26,8 @@
 
 .collection-card-info > .row{
     margin: 0;
+}
+
+.collection-sort{
+    text-align: center;
 }

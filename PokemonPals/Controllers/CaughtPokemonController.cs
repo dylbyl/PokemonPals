@@ -32,7 +32,7 @@ namespace PokemonPals.Controllers
 
         // GET: CaughtPokemons
         [Authorize]
-        public async Task<IActionResult> Collection()
+        public async Task<IActionResult> Collection(string sortOrder)
         {
             ApplicationUser currentUser = await GetCurrentUserAsync();
 
@@ -43,6 +43,60 @@ namespace PokemonPals.Controllers
                                                             .Where(cp => cp.isHidden == false)
                                                             .OrderBy(cp => cp.PokemonId)
                                                             .ToListAsync();
+
+            ViewBag.SpeciesSortParm = String.IsNullOrEmpty(sortOrder) ? "species_desc" : "";
+            ViewBag.FavoriteSortParm = sortOrder == "Favorite" ? "favorite_false" : "Favorite";
+            ViewBag.TradeSortParm = sortOrder == "Open to Trade" ? "trade_false" : "Open to Trade";
+            ViewBag.LevelSortParm = sortOrder == "Level" ? "level_asc" : "Level";
+            ViewBag.CPSortParm = sortOrder == "CP" ? "CP_asc" : "CP";
+            ViewBag.NicknameSortParm = sortOrder == "Nickname" ? "nickname_false" : "Nickname";
+            ViewBag.CommentSortParm = sortOrder == "Comment" ? "comment_false" : "Comment";
+
+            switch (sortOrder)
+            {
+                case "species_desc":
+                    FullUserCollection = FullUserCollection.OrderByDescending(cp => cp.PokemonId).ToList();
+                    break;
+                case "Favorite":
+                    FullUserCollection = FullUserCollection.Where(cp => cp.isFavorite).ToList();
+                    break;
+                case "favorite_false":
+                    FullUserCollection = FullUserCollection.Where(cp => !cp.isFavorite).ToList();
+                    break;
+                case "Open to Trade":
+                    FullUserCollection = FullUserCollection.Where(cp => cp.isTradeOpen).ToList();
+                    break;
+                case "trade_false":
+                    FullUserCollection = FullUserCollection.Where(cp => !cp.isTradeOpen).ToList();
+                    break;
+                case "Level":
+                    FullUserCollection = FullUserCollection.OrderByDescending(cp => cp.Level).ToList();
+                    break;
+                case "level_asc":
+                    FullUserCollection = FullUserCollection.OrderBy(cp => cp.Level).ToList();
+                    break;
+                case "CP":
+                    FullUserCollection = FullUserCollection.OrderByDescending(cp => cp.CP).ToList();
+                    break;
+                case "CP_asc":
+                    FullUserCollection = FullUserCollection.OrderBy(cp => cp.CP).ToList();
+                    break;
+                case "Nickname":
+                    FullUserCollection = FullUserCollection.Where(cp => cp.Nickname != null).ToList();
+                    break;
+                case "nickname_false":
+                    FullUserCollection = FullUserCollection.Where(cp => cp.Nickname == null).ToList();
+                    break;
+                case "Comment":
+                    FullUserCollection = FullUserCollection.Where(cp => cp.Comment != null && cp.Comment != "").ToList();
+                    break;
+                case "comment_false":
+                    FullUserCollection = FullUserCollection.Where(cp => cp.Comment == null || cp.Comment == "").ToList();
+                    break;
+                default:
+                    FullUserCollection = FullUserCollection.OrderBy(cp => cp.PokemonId).ToList();
+                    break;
+            }
 
             return View(FullUserCollection);
         }
