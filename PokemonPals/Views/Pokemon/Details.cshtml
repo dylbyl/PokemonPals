@@ -192,14 +192,14 @@
                         {
                             <h4 class="dex-details-red-text row">
                                 <a asp-controller="CaughtPokemon" asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
-                                    @capitalName 
+                                    @capitalName
                                 </a>
 
                             </h4>
                         }
-                    <div class="dex-details-red-text row">
-                        Level @PokemonInCollection.Level
-                    </div>
+                        <div class="dex-details-red-text row">
+                            Level @PokemonInCollection.Level
+                        </div>
 
                         <div class="dex-details-red-text row">
                             @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
