@@ -5,6 +5,7 @@
 }
 
 @{
+    //A tring to store the Pokemon's capitalized name
     string capitalName = char.ToUpper(Model.Pokemon.Name[0]) + Model.Pokemon.Name.Substring(1);
     <div class="global-header">
         <h1>Remove from your Collection?</h1>
@@ -12,6 +13,7 @@
 
     <div class="delete-container">
 
+        @*Displays an info card showing the Pokemon's sprite, Nickname/species name, all its info*@
         <div class="pokemon-card row">
             <div class="col">
                 <img class="sprite-img" src=@Model.Pokemon.RBSpriteURL />
@@ -39,6 +41,7 @@
                     @Model.Gender.Name, @Model.CP CP
                 </div>
 
+                @*If the user has favorited this Pokemon or marked it eligile for trade, creates a string of those properties to display*@
                 <div class="row">
                     <div class="col-sm-7">
                         @{
@@ -77,7 +80,7 @@
             </div>
         </div>
 
-        
+        @*Displays a warning if the user is trying to delete a Pokemon they have marked as a favorite*@
         @if(Model.isFavorite == true)
         {
             <div class="global-header">
@@ -88,6 +91,8 @@
         }
 
         <br />
+
+        @*The button for deleting the Pokemon, once and for all*@
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
             <input type="submit" value="Delete" class="btn global-btn" />
@@ -95,7 +100,7 @@
     </div>
 }
 
-
+@*Lets the user go back to the Dex view*@
 <div class="back-btn-container">
-    <a asp-action="Dex">Back to Dex</a>
+    <a asp-controller="Pokemon" asp-action="Dex">Back to Collection</a>
 </div>

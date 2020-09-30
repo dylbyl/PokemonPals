@@ -5,8 +5,11 @@
 }
 
 @{
+    //A string for storing a Pokemon's capitalized name
     string capitalName = char.ToUpper(Model.SelectedPokemon.Name[0]) + Model.SelectedPokemon.Name.Substring(1);
     string threeDigitId = "";
+
+    //Turns a one digit number (ie 5) into a three digit number (ie 005)
     if (Model.SelectedPokemon.PokedexNumber < 10)
     {
         threeDigitId = $"00{Model.SelectedPokemon.PokedexNumber}";
@@ -19,12 +22,15 @@
     {
         threeDigitId = $"{Model.SelectedPokemon.PokedexNumber}";
     }
+
+    //Displays a header with that Pokemon's capital name a three digit number. Also contains a pokeball image that, when clicked, takes the user to a page to "catch" that Pokemon and add it to their collection
     <div class="global-header">
         <h1>@threeDigitId - @capitalName</h1>
         <a asp-controller="CaughtPokemon" asp-action="Create" asp-route-id="@Model.SelectedPokemon.Id"><img class="pokeball-img" src="@Url.Content("~/images/pokeball.png")" /></a>
     </div>
 }
 
+@*A bootstrap row for the Pokemon's official art and various stats*@
 <div class="row">
     <div class="col">
         <img class="dex-details-official-img" src=@Model.SelectedPokemon.OfficialArtURL />
@@ -161,6 +167,7 @@
 @*End of Image, Height/Weight, and Stats section. Beginning of User Collection*@
 
 @{
+//If the user has caught any of this Pokemon species, we're going to show their collection of this species to them
     if (Model.UserCollection.Count > 0)
     {
         <hr />
@@ -170,6 +177,7 @@
             </div>
             @foreach (CaughtPokemon PokemonInCollection in Model.UserCollection)
             {
+                //A card that will show a Pokemon's sprite image, nickname/species name, level, CP, gender, Favorite/TradeOpen booleans, comments, and Date Caught
                 <div class="pokemon-card row">
                     <div class="col">
                         <a asp-controller="CaughtPokemon" asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
@@ -248,6 +256,7 @@
 
 }
 
+@*Lets the user go back to the Dex view*@
 <div class="back-btn-container">
     <a asp-action="Dex">Back to Dex</a>
 </div>

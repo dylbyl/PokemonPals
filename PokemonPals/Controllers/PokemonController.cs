@@ -64,22 +64,28 @@ namespace PokemonPals.Controllers
             return View(model);
         }
 
-        // GET: Pokemons/Details/5
+        // GET: Pokemon/Details/5
+        //A method for showing the Details view of a single Pokemon species
         [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
+            //Throws a NotFound page if the user tries to access a Pokemon that doesn't exist
             if (id == null)
             {
                 return NotFound();
             }
 
+            //gets the currently logged in user
             ApplicationUser currentUser = await GetCurrentUserAsync();
 
+            //creates a ViewModel for our details page, so we can access a few different objects from our HTML
             CaughtPokemonDexViewModel model = new CaughtPokemonDexViewModel();
 
+            //Fetches the details of the Pokemon species that the user wishes to view
             model.SelectedPokemon = await _context.Pokemon
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            //Fetches all CaughtPokemon resources that belong to this user and match the current Pokemon species. We're going to show the user all Pokemon they own of the species they're viewing.
             model.UserCollection = await _context.CaughtPokemon
                                         .Include(cp => cp.Pokemon)
                                         .Include(cp => cp.Gender)
@@ -88,28 +94,40 @@ namespace PokemonPals.Controllers
                                         .Where(cp => cp.isHidden == false)
                                         .ToListAsync();
             
+            //If the desired Pokemon doesn't exist in our database, send a NotFound page
             if (model.SelectedPokemon == null)
             {
                 return NotFound();
             }
 
+            //Send us to the Details view with our ViewModel in hand
             return View(model);
         }
 
+        //A task for adding a single Pokemon to our database, using data from the public PokeAPI. Call this in a loop ONLY FOR ONE RUN. Afterwards, some names may still need to be edited (for instance "Mr. Mime" was saved as "mr-mime")
+        //Accepts a Pokemon's Pokedex Number as a parameter. For the first run, I put this in a loop and passed in the iterator, i, while i was 1 to 151. You can do this for every generation of Pokemon, but the API only lets you call it 300 times a day. There are 800+ Pokemon. For the sake of simplicity, I scraped data of the original 151 and held them in my own SQL server to cut down on API calls and load times.
         public async Task AddOnePokemon(int PokedexNumber)
         {
+            //The url for fetching a single Pokemon from the API, using the parameter as part of the URL
             var url = $"https://pokeapi.co/api/v2/pokemon/{PokedexNumber}/";
+
+            //Opens up an httpClient and passes in our API url
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders
                 .Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var response = await httpClient.GetAsync(url);
+
+            //Runs if we successfully get a response from the API
             if (response.IsSuccessStatusCode)
             {
+                //Stores the API result as JSON...
                 var json = await response.Content.ReadAsStreamAsync();
+                //...then converts it to a special PokemonData resource that was auto-populated by Visual Studio based on the API's JSON response structure
                 var PokemonData = await JsonSerializer.DeserializeAsync<PokemonResponse>(json);
 
+                //A quick few lines of code to turn the Pokemon's Pokedex Number (ie. 5) into a three digit number (ie. 005). This is used in string interpolation to link to the Pokemon's official artwork on the Pokemon site.
                 string threeDigitId = "";
 
                 if (PokedexNumber < 10)
@@ -125,8 +143,10 @@ namespace PokemonPals.Controllers
                     threeDigitId = $"{PokedexNumber}";
                 }
 
+                //Instantiates a new Pokemon object to save the API info in. We're not storing ALL the API data in our database, just the relevant info
                 Pokemon OnePokemon;
 
+                //Creates a Pokemon object with only a single "type" property, "Type2" will be null
                 if (PokemonData.types.Count() == 1)
                 {
                     OnePokemon = new Pokemon
@@ -148,6 +168,7 @@ namespace PokemonPals.Controllers
                         Speed = PokemonData.stats[5].base_stat
                     };
                 }
+                //If the Pokemon in the API has two types, create a Pokemon with Type1 and Type2 filled in
                 else
                 {
                     OnePokemon = new Pokemon
@@ -170,6 +191,9 @@ namespace PokemonPals.Controllers
                     };
                 }
 
+                //If you look at OfficialArtURL above, you'll see how we used the threeDigitID variable
+
+                //Adds this newly created Pokemon object to our database
                 _context.Add(OnePokemon);
                 await _context.SaveChangesAsync();
             }

@@ -5,8 +5,10 @@
 }
 
 @{
+    //A string for holding the Pokemon's capitalized name
     string capitalName = char.ToUpper(Model.SelectedCaughtPokemon.Pokemon.Name[0]) + Model.SelectedCaughtPokemon.Pokemon.Name.Substring(1);
 
+    //A header that displays either the Pokemon's nickname OR their species name, along with a sprite image
     <div class="global-header">
         <img class="sprite-img" src="@Model.SelectedCaughtPokemon.Pokemon.RBSpriteURL" />
         @if (Model.SelectedCaughtPokemon.Nickname != null)
@@ -24,12 +26,14 @@
     </div>
 }
 
+@*A container to hold all of the text-input fields, checkboxes, and dropdowns for editing a Pokemon's info*@
 <div class="row">
     <div class="caught-create-info-card col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="SelectedCaughtPokemon.Id" />
             <input type="hidden" asp-for="SelectedCaughtPokemon.UserId" />
+            @*A dropdown that lets the user change the species of the Pokemon. Useful if they created the wrong Pokemon, or if their Pokemon evolves in-game*@
             <div class="form-group">
                 <label asp-for="SelectedCaughtPokemon.PokemonId" class="control-label">Species</label>
                 <select asp-for="SelectedCaughtPokemon.PokemonId" class="form-control" asp-items="Model.AllPokemon"></select>
@@ -82,6 +86,7 @@
     </div>
 </div>
 
+@*Can direct the user back to the Dex view OR to the Delete view. Pokemon can only be deleted from this Edit view.*@
 <div class="back-btn-container">
     <a asp-action="Delete" asp-route-id="@Model.SelectedCaughtPokemon.Id">Remove from Collection</a>
     <br />
