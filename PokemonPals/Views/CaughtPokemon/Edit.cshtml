@@ -83,6 +83,8 @@
 </div>
 
 <div class="back-btn-container">
+    <a asp-action="Delete" asp-route-id="@Model.SelectedCaughtPokemon.Id">Remove from Collection</a>
+    <br />
     <a asp-controller="Pokemon" asp-action="Dex">Back to Dex</a>
 </div>
 

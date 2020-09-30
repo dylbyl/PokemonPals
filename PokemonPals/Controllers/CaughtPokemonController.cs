@@ -245,6 +245,7 @@ namespace PokemonPals.Controllers
         }
 
         // GET: CaughtPokemons/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -252,11 +253,15 @@ namespace PokemonPals.Controllers
                 return NotFound();
             }
 
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+
             var caughtPokemon = await _context.CaughtPokemon
                 .Include(c => c.Gender)
                 .Include(c => c.Pokemon)
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Where(cp => cp.Id == id)
+                .Where(cp => cp.UserId == currentUser.Id)
+                .FirstOrDefaultAsync();
+
             if (caughtPokemon == null)
             {
                 return NotFound();
@@ -273,7 +278,7 @@ namespace PokemonPals.Controllers
             var caughtPokemon = await _context.CaughtPokemon.FindAsync(id);
             _context.CaughtPokemon.Remove(caughtPokemon);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Collection));
         }
 
         private bool CaughtPokemonExists(int id)
