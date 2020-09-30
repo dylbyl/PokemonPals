@@ -1,13 +1,10 @@
 ﻿.dex-card {
     border-radius: 8px;
     background-color: #ffe8e7;
-    margin: 1em;
+    margin: 30px;
     text-align: center;
     padding: 1em;
-    width: 12%;
-    height: 10%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    min-width: 100px;
 }
 
     .dex-card:hover {
