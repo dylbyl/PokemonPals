@@ -23,38 +23,36 @@
 </div>
 
 <div class="dex-container">
-    @foreach (var item in Model.AllPokemon)
+    @foreach (Pokemon singlePokemon in Model.AllPokemon)
     {
         string caughtClass = "";
         if (Model.PokemonCaught != null)
         {
-            if (Model.PokemonCaught.Contains(item.Id))
+            if (Model.PokemonCaught.Contains(singlePokemon.Id))
             {
                 caughtClass = "dex-caught";
             }
         }
         <container class="dex-card @caughtClass">
-            <a asp-action="Details" asp-route-id="@item.Id"><img class="sprite-img" src=@item.RBSpriteURL /></a>
+            <a asp-action="Details" asp-route-id="@singlePokemon.Id"><img class="sprite-img" src=@singlePokemon.RBSpriteURL /></a>
             @{
-                string capitalName = char.ToUpper(item.Name[0]) + item.Name.Substring(1);
-
                 string threeDigitId = "";
-                if (item.PokedexNumber < 10)
+                if (singlePokemon.PokedexNumber < 10)
                 {
-                    threeDigitId = $"00{item.PokedexNumber}";
+                    threeDigitId = $"00{singlePokemon.PokedexNumber}";
                 }
-                else if (item.PokedexNumber < 100)
+                else if (singlePokemon.PokedexNumber < 100)
                 {
-                    threeDigitId = $"0{item.PokedexNumber}";
+                    threeDigitId = $"0{singlePokemon.PokedexNumber}";
                 }
                 else
                 {
-                    threeDigitId = $"{item.PokedexNumber}";
+                    threeDigitId = $"{singlePokemon.PokedexNumber}";
                 }
             }
             <div>
-                <a asp-action="Details" asp-route-id="@item.Id">@threeDigitId <br /> @capitalName</a> <br />
-                <a asp-controller="CaughtPokemon" asp-action="Create" asp-route-id="@item.Id"><img class="pokeball-img" src="@Url.Content("~/images/pokeball.png")" /></a>
+                <a asp-action="Details" asp-route-id="@singlePokemon.Id">@threeDigitId <br /> @singlePokemon.Name</a> <br />
+                <a asp-controller="CaughtPokemon" asp-action="Create" asp-route-id="@singlePokemon.Id"><img class="pokeball-img" src="@Url.Content("~/images/pokeball.png")" /></a>
             </div>
         </container>
     }

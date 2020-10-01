@@ -5,8 +5,6 @@
 }
 
 @{
-    //A tring to store the Pokemon's capitalized name
-    string capitalName = char.ToUpper(Model.Pokemon.Name[0]) + Model.Pokemon.Name.Substring(1);
     <div class="global-header">
         <h1>Remove from your Collection?</h1>
     </div>
@@ -30,7 +28,7 @@
                 else
                 {
                     <h4 class="dex-details-red-text row">
-                        @capitalName
+                        @Model.Pokemon.Name
                     </h4>
                 }
                 <div class="dex-details-red-text row">
