@@ -5,9 +5,6 @@
 }
 
 @{
-    //A string for holding the Pokemon's capitalized name
-    string capitalName = char.ToUpper(Model.SelectedCaughtPokemon.Pokemon.Name[0]) + Model.SelectedCaughtPokemon.Pokemon.Name.Substring(1);
-
     //A header that displays either the Pokemon's nickname OR their species name, along with a sprite image
     <div class="global-header">
         <img class="sprite-img" src="@Model.SelectedCaughtPokemon.Pokemon.RBSpriteURL" />
@@ -20,7 +17,7 @@
         else
         {
             <h1 class="dex-details-red-text">
-                Want to edit @capitalName?
+                Want to edit @Model.SelectedCaughtPokemon.Pokemon.Name?
             </h1>
         }
     </div>

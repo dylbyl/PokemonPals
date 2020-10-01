@@ -5,8 +5,6 @@
 }
 
 @{
-    //A string for storing a Pokemon's capitalized name
-    string capitalName = char.ToUpper(Model.SelectedPokemon.Name[0]) + Model.SelectedPokemon.Name.Substring(1);
     string threeDigitId = "";
 
     //Turns a one digit number (ie 5) into a three digit number (ie 005)
@@ -25,7 +23,7 @@
 
     //Displays a header with that Pokemon's capital name a three digit number. Also contains a pokeball image that, when clicked, takes the user to a page to "catch" that Pokemon and add it to their collection
     <div class="global-header">
-        <h1>@threeDigitId - @capitalName</h1>
+        <h1>@threeDigitId - @Model.SelectedPokemon.Name</h1>
         <a asp-controller="CaughtPokemon" asp-action="Create" asp-route-id="@Model.SelectedPokemon.Id"><img class="pokeball-img" src="@Url.Content("~/images/pokeball.png")" /></a>
     </div>
 }
@@ -48,8 +46,7 @@
                             Type 1
                         </dt>
                         <dd class="col-sm-4">
-                            @{string capitalType1 = char.ToUpper(Model.SelectedPokemon.Type1[0]) + Model.SelectedPokemon.Type1.Substring(1); }
-                            @capitalType1
+                            @Model.SelectedPokemon.Type1
                         </dd>
                     </dl>
                     @{
@@ -60,8 +57,7 @@
                                     Type 2
                                 </dt>
                                 <dd class="col-sm-4">
-                                    @{string capitalType2 = char.ToUpper(Model.SelectedPokemon.Type2[0]) + Model.SelectedPokemon.Type2.Substring(1); }
-                                    @capitalType2
+                                    @Model.SelectedPokemon.Type2
                                 </dd>
                             </dl>
                         }
@@ -173,7 +169,7 @@
         <hr />
         <div class="dex-details-collection">
             <div class="global-header">
-                <h2>@capitalName You've Caught</h2>
+                <h2>@Model.SelectedPokemon.Name You've Caught</h2>
             </div>
             @foreach (CaughtPokemon PokemonInCollection in Model.UserCollection)
             {
@@ -200,7 +196,7 @@
                         {
                             <h4 class="dex-details-red-text row">
                                 <a asp-controller="CaughtPokemon" asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
-                                    @capitalName
+                                    @Model.SelectedPokemon.Name
                                 </a>
 
                             </h4>

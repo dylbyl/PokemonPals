@@ -31,9 +31,9 @@ namespace PokemonPals.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: CaughtPokemon
-        //A method to show the user's entire collection of caught Pokemon
+        //A method to show the user's entire collection of caught Pokemon. Accepts two parameters: a string declaring the order the collection should be sorted in, and a string that can be used to search the colleciton.
         [Authorize]
-        public async Task<IActionResult> Collection(string sortOrder)
+        public async Task<IActionResult> Collection(string sortOrder, string searchString)
         {
             //Gets the current user
             ApplicationUser currentUser = await GetCurrentUserAsync();
@@ -46,6 +46,15 @@ namespace PokemonPals.Controllers
                                                             .Where(cp => cp.isHidden == false)
                                                             .OrderBy(cp => cp.PokemonId)
                                                             .ToListAsync();
+
+            //Runs if a search term has been entered on the Collection view
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                //Checks the caught Pokemon's nickname, species name, and both types for the search string. This is a case insensitive search. Two of the properties (Nickname and Type 2) are nullable, and therfore require a null-conditional operator (ie cp.Nickname ?? ""). In this expression, if the property is NOT null, the property is used. If the property is null, and empty string is used instead.
+                FullUserCollection = FullUserCollection.Where(
+                    cp => (cp.Nickname ?? "").Contains(searchString, StringComparison.OrdinalIgnoreCase)
+                                       || cp.Pokemon.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) || cp.Pokemon.Type1.Equals(searchString, StringComparison.OrdinalIgnoreCase) || (cp.Pokemon.Type2 ?? "").Equals(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
 
             //These lines check to see if a parameter was passed to this method to determine if the collection is sorted. If so, the data stored in the ViewBag is switched to the inverse sortOrder string, so that when the user clicks the sort link a second time, the sort order will be reversed.
             ViewBag.SpeciesSortParm = String.IsNullOrEmpty(sortOrder) ? "species_desc" : "";

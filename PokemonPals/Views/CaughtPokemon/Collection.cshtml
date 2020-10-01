@@ -12,6 +12,17 @@
 
 <hr />
 
+@*A search bar, letting the user search their collection*@
+<div class="collection-sort">
+    @using (Html.BeginForm())
+    {
+        <p>
+            Search by species, nickname, type, or comment: @Html.TextBox("searchString")
+            <input type="submit" value="Search" />
+        </p>
+    }
+</div>
+
 @*A container for multiple links that will allow the user to sort their Pokemon collection on different properties, like Nickname, Favorite, Level, etc.*@
 <div class="collection-sort">
     Sort by:
@@ -25,7 +36,7 @@
 </div>
 
 <div class="collection-container">
-    
+
     @{
         //if the list passed to this view is empty, we're going to prompt the user to add a Pokemon to their collection
         if (Model.Count() == 0)
@@ -35,8 +46,6 @@
         //Loops through the CaughtPokemon passed to the View
         foreach (CaughtPokemon PokemonInCollection in Model)
         {
-            //Creates a capitalized version of the Pokemon's name
-            string capitalName = char.ToUpper(PokemonInCollection.Pokemon.Name[0]) + PokemonInCollection.Pokemon.Name.Substring(1);
 
             //A card for displaying a single Pokemon
             <div class="collection-card">
@@ -59,7 +68,7 @@
                     {
                         <h4 class="dex-details-red-text row">
                             <a asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
-                                @capitalName
+                                @PokemonInCollection.Pokemon.Name
                             </a>
                         </h4>
                     }

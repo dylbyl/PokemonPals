@@ -5,12 +5,10 @@
 }
 
 @{
-    //A variable of the Pokemon's capitalized name
-    string capitalName = char.ToUpper(Model.SelectedPokemon.Name[0]) + Model.SelectedPokemon.Name.Substring(1);
     string anOrA = "a";
 
     //Will display "a" or "an" depending on whether the Pokemon's name begins with a vowel
-    if (capitalName[0] == 'A' || capitalName[0] == 'E' || capitalName[0] == 'I' || capitalName[0] == 'O' || capitalName[0] == 'U')
+    if (Model.SelectedPokemon.Name[0] == 'A' || Model.SelectedPokemon.Name[0] == 'E' || Model.SelectedPokemon.Name[0] == 'I' || Model.SelectedPokemon.Name[0] == 'O' || Model.SelectedPokemon.Name[0] == 'U')
     {
         anOrA = "an";
     }
@@ -21,7 +19,7 @@
 
     <div class="global-header">
         <img class="sprite-img" src="@Model.SelectedPokemon.RBSpriteURL" />
-        <h1>You caught @anOrA @capitalName!!</h1>
+        <h1>You caught @anOrA @Model.SelectedPokemon.Name!!</h1>
     </div>
 }
 

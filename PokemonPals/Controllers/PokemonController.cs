@@ -50,7 +50,7 @@ namespace PokemonPals.Controllers
                                                             .ToListAsync();
 
             //Loops through the list of Pokemon the user owns, so that we can get their IDs
-            foreach(CaughtPokemon caughtPokemon in listOfUserCaughtPokemon)
+            foreach (CaughtPokemon caughtPokemon in listOfUserCaughtPokemon)
             {
                 //If this list does not already contain the species of Pokemon we're currently looking at...
                 if (!model.PokemonCaught.Contains(caughtPokemon.PokemonId))
@@ -93,7 +93,7 @@ namespace PokemonPals.Controllers
                                         .Where(cp => cp.UserId == currentUser.Id)
                                         .Where(cp => cp.isHidden == false)
                                         .ToListAsync();
-            
+
             //If the desired Pokemon doesn't exist in our database, send a NotFound page
             if (model.SelectedPokemon == null)
             {
@@ -197,6 +197,29 @@ namespace PokemonPals.Controllers
                 _context.Add(OnePokemon);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        //When I scraped the data from the API, I realized AFTER the fact that the Pokemon names and types were all lowercase. So I devised a method (which, again, ran in only one loop) to fetch a Pokemon, capitalize its name and types, then update its entry in the database. Some Pokemon were stored *even weirder* and needed further adjusting (Mr. Mime and the two types of Nidoran were stored as "mr-mime," "nidoran-m," and "nidoran-f"). I adjusted these three with a SQL query after running this method. My plan is to export my entire database as a giant SQL query so that anyone who needs the data for testing can run a single script instead of having to manually scrape the API and use these methods. I'm keeping them just for future reference!
+        public async Task CapitalizeOnePokemon(int id)
+        {
+            //Grabs a single Pokemon
+            Pokemon pokemonToChange = await _context.Pokemon.FirstOrDefaultAsync(p => p.Id == id);
+
+            //Capitalizes its name
+            pokemonToChange.Name = char.ToUpper(pokemonToChange.Name[0]) + pokemonToChange.Name.Substring(1);
+
+            //Capitalizes its first type
+            pokemonToChange.Type1 = char.ToUpper(pokemonToChange.Type1[0]) + pokemonToChange.Type1.Substring(1);
+
+            //If it has a second type, capitalizes it too
+            if (pokemonToChange.Type2 != null)
+            {
+                pokemonToChange.Type2 = char.ToUpper(pokemonToChange.Type2[0]) + pokemonToChange.Type2.Substring(1);
+            }
+
+            //Saves the update Pokemon to our database
+            _context.Update(pokemonToChange);
+            await _context.SaveChangesAsync();
         }
     }
 }
