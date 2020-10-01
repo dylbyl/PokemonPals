@@ -4,36 +4,111 @@
     ViewData["Title"] = "Collection";
 }
 
+@{
+    string filterString = "caught";
+    string sortString = "Sorted ascending by Pokedex Number";
+    string searchString = ViewBag.SearchString;
 
-<div class="global-header">
+    switch (ViewBag.SortOrderString)
+    {
+        case "species_desc":
+            sortString = "Sorted descending by Pokedex Number";
+            break;
+        case "favorite_true":
+            filterString = "favorite Pokemon";
+            break;
+        case "favorite_false":
+            filterString = "Pokemon that aren't a favorite";
+            break;
+        case "trade_true":
+            filterString = "Pokemon that you'd be okay with trading";
+            break;
+        case "trade_false":
+            filterString = "Pokemon that you don't want to trade";
+            break;
+        case "level_desc":
+            sortString = "Sorted descending by level";
+            break;
+        case "level_asc":
+            sortString = "Sorted ascending by level";
+            break;
+        case "CP_desc":
+            sortString = "Sorted descending by CP";
+            break;
+        case "CP_asc":
+            sortString = "Sorted ascending by CP";
+            break;
+        case "nickname_true":
+            filterString = "Pokemon with a nickname";
+            break;
+        case "nickname_false":
+            filterString = "Pokemon without a nickname";
+            break;
+        case "comment_true":
+            filterString = "Pokemon with comments attached";
+            break;
+        case "comment_false":
+            filterString = "Pokemon without comments attached";
+            break;
+        default:
+            filterString = "caught";
+            sortString = "Sorted ascending by Pokedex Number";
+            break;
+    };
+}
+
+
+<div class="collection-header">
     <h1>Collection</h1>
-    <p>@Model.Count() total caught</p>
+</div>
+
+<div class="row">
+    <div class="col"></div>
+    <div class="col-sm-4">
+        @*A search bar, letting the user search their collection*@
+        <div class="collection-sort">
+            @using (Html.BeginForm())
+            {
+                <p>
+                    Search by species, nickname, type, or comment: <br />
+                    @Html.TextBox("searchString") <input type="submit" value="Search" />
+                </p>
+            }
+        </div>
+    </div>
+    <div class="col-sm-5">
+        @*Containers for multiple links that will allow the user to sort/filter their Pokemon collection on different properties, like Nickname, Favorite, Level, etc.*@
+        <div class="collection-sort">
+            Filter by:
+            @Html.ActionLink("Favorite", "Collection", new { sortOrder = ViewBag.FavoriteSortParm }) |
+            @Html.ActionLink("Open to Trade", "Collection", new { sortOrder = ViewBag.TradeSortParm }) |
+            @Html.ActionLink("Nickname", "Collection", new { sortOrder = ViewBag.NicknameSortParm }) |
+            @Html.ActionLink("Comment", "Collection", new { sortOrder = ViewBag.CommentSortParm })
+        </div>
+
+        <div class="collection-sort">
+            Sort by:
+            @Html.ActionLink("Number", "Collection", new { sortOrder = ViewBag.NumberSortParm }) |
+            @Html.ActionLink("Level", "Collection", new { sortOrder = ViewBag.LevelSortParm }) |
+            @Html.ActionLink("CP", "Collection", new { sortOrder = ViewBag.CPSortParm })
+        </div>
+    </div>
+    <div class="col"></div>
 </div>
 
 <hr />
 
-@*A search bar, letting the user search their collection*@
-<div class="collection-sort">
-    @using (Html.BeginForm())
-    {
-        <p>
-            Search by species, nickname, type, or comment: @Html.TextBox("searchString")
-            <input type="submit" value="Search" />
-        </p>
+<div class="global-header collection-sort">
+    <h4>@Model.Count() total @filterString</h4>
+    <p>@sortString</p>
+    @{
+        if (searchString != null)
+        {
+            <p>Searching by term "@searchString"</p>;
+        }
     }
 </div>
 
-@*A container for multiple links that will allow the user to sort their Pokemon collection on different properties, like Nickname, Favorite, Level, etc.*@
-<div class="collection-sort">
-    Sort by:
-    @Html.ActionLink("Species", "Collection", new { sortOrder = ViewBag.SpeciesSortParm }) |
-    @Html.ActionLink("Favorite", "Collection", new { sortOrder = ViewBag.FavoriteSortParm }) |
-    @Html.ActionLink("Open to Trade", "Collection", new { sortOrder = ViewBag.TradeSortParm }) |
-    @Html.ActionLink("Level", "Collection", new { sortOrder = ViewBag.LevelSortParm }) |
-    @Html.ActionLink("CP", "Collection", new { sortOrder = ViewBag.CPSortParm }) |
-    @Html.ActionLink("Nickname", "Collection", new { sortOrder = ViewBag.NicknameSortParm }) |
-    @Html.ActionLink("Comment", "Collection", new { sortOrder = ViewBag.CommentSortParm })
-</div>
 
 <div class="collection-container">
 

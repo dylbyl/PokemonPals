@@ -4,21 +4,83 @@
     ViewData["Title"] = "Index";
 }
 
+@{
+    string sortString = "Sorted ascending by Pokedex Number";
+    string searchString = ViewBag.SearchString;
+
+    switch (ViewBag.SortOrderString)
+    {
+        case "number_desc":
+            sortString = "Sorted descending by Pokedex Number";
+            break;
+        case "name_desc":
+            sortString = "Sorted in reverse alphabetical order";
+            break;
+        case "name_asc":
+            sortString = "Sorted in alphabetical order";
+            break;
+        default:
+            sortString = "Sorted ascending by Pokedex Number";
+            break;
+    };
+}
+
 <div class="global-header">
     <h1>Pokedex</h1>
     @{
-        decimal totalCount = 0;
-        if (Model.PokemonCaught != null)
+        if (searchString == null)
         {
-            totalCount = Model.PokemonCaught.Count();
-        }
-        decimal totalPercent = (totalCount / Model.AllPokemon.Count()) * 100;
-        string percentString = totalPercent.ToString("0.##");
+            decimal totalCount = 0;
+            if (Model.PokemonCaught != null)
+            {
+                totalCount = Model.PokemonCaught.Count();
+            }
+            decimal totalPercent = (totalCount / Model.AllPokemon.Count()) * 100;
+            string percentString = totalPercent.ToString("0.##");
 
-        <div class="dex-progress-bar">
-            <div class="dex-progress-completion" style="width:@percentString%"></div>
-            <p class="dex-progress-text">@totalCount of @Model.AllPokemon.Count() caught // @percentString%</p>
+            <div class="dex-progress-bar">
+                <div class="dex-progress-completion" style="width:@percentString%"></div>
+                <p class="dex-progress-text">@totalCount of @Model.AllPokemon.Count() caught // @percentString%</p>
+            </div>
+        }
+    }
+</div>
+
+<div class="row">
+    <div class="col"></div>
+    <div class="col-sm-5">
+        @*A search bar, letting the user search their collection*@
+        <div class="collection-sort">
+            @using (Html.BeginForm())
+            {
+                <p>
+                    Search by name:
+                    @Html.TextBox("searchString") <input type="submit" value="Search" />
+                </p>
+            }
         </div>
+    </div>
+    <div class="col-sm-3">
+        @*Containers for multiple links that will allow the user to sort the Pokedex by name or number*@
+
+        <div class="collection-sort">
+            Sort by:
+            @Html.ActionLink("Number", "Dex", new { sortOrder = ViewBag.NumberSortParm }) |
+            @Html.ActionLink("Name", "Dex", new { sortOrder = ViewBag.NameSortParm })
+        </div>
+    </div>
+    <div class="col"></div>
+</div>
+
+<hr />
+
+<div class="global-header">
+    @sortString
+    @{
+        if (searchString != null)
+        {
+            <p>Searching by term "@searchString"</p>;
+        }
     }
 </div>
 

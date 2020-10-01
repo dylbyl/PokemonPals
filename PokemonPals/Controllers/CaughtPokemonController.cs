@@ -57,7 +57,7 @@ namespace PokemonPals.Controllers
             }
 
             //These lines check to see if a parameter was passed to this method to determine if the collection is sorted. If so, the data stored in the ViewBag is switched to the inverse sortOrder string, so that when the user clicks the sort link a second time, the sort order will be reversed.
-            ViewBag.SpeciesSortParm = String.IsNullOrEmpty(sortOrder) ? "species_desc" : "";
+            ViewBag.NumberSortParm = String.IsNullOrEmpty(sortOrder) ? "number_desc" : "";
             ViewBag.FavoriteSortParm = sortOrder == "favorite_true" ? "favorite_false" : "favorite_true";
             ViewBag.TradeSortParm = sortOrder == "trade_true" ? "trade_false" : "trade_true";
             ViewBag.LevelSortParm = sortOrder == "level_desc" ? "level_asc" : "level_desc";
@@ -65,11 +65,14 @@ namespace PokemonPals.Controllers
             ViewBag.NicknameSortParm = sortOrder == "nickname_true" ? "nickname_false" : "nickname_true";
             ViewBag.CommentSortParm = sortOrder == "comment_true" ? "comment_false" : "comment_true";
 
+            ViewBag.SortOrderString = sortOrder;
+            ViewBag.SearchString = searchString;
+
             //A switch-case that checks the sortOrder string, and properly sorts the user's Pokemon collection accordingly
             switch (sortOrder)
             {
-                case "species_desc":
-                    FullUserCollection = FullUserCollection.OrderByDescending(cp => cp.PokemonId).ToList();
+                case "number_desc":
+                    FullUserCollection = FullUserCollection.OrderByDescending(cp => cp.Pokemon.PokedexNumber).ToList();
                     break;
                 case "favorite_true":
                     FullUserCollection = FullUserCollection.Where(cp => cp.isFavorite).ToList();
@@ -108,7 +111,7 @@ namespace PokemonPals.Controllers
                     FullUserCollection = FullUserCollection.Where(cp => cp.Comment == null || cp.Comment == "").ToList();
                     break;
                 default:
-                    FullUserCollection = FullUserCollection.OrderBy(cp => cp.PokemonId).ToList();
+                    FullUserCollection = FullUserCollection.OrderBy(cp => cp.Pokemon.PokedexNumber).ToList();
                     break;
             }
 
@@ -177,7 +180,7 @@ namespace PokemonPals.Controllers
 
             CaughtPokemonCreateViewModel failedModel = new CaughtPokemonCreateViewModel();
             failedModel.SelectedPokemon = await _context.Pokemon
-                                    .Where(p => p.Id == model.SelectedPokemon.Id)
+                                    .Where(p => p.Id == model.PokemonToAdd.PokemonId)
                                     .FirstOrDefaultAsync();
 
             List<Gender> gendersToSelectFrom = await _context.Gender.ToListAsync();
