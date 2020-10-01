@@ -5,8 +5,11 @@
 }
 
 @{
+    //A variable of the Pokemon's capitalized name
     string capitalName = char.ToUpper(Model.SelectedPokemon.Name[0]) + Model.SelectedPokemon.Name.Substring(1);
     string anOrA = "a";
+
+    //Will display "a" or "an" depending on whether the Pokemon's name begins with a vowel
     if (capitalName[0] == 'A' || capitalName[0] == 'E' || capitalName[0] == 'I' || capitalName[0] == 'O' || capitalName[0] == 'U')
     {
         anOrA = "an";
@@ -22,6 +25,7 @@
     </div>
 }
 
+@*A container for all of the text-input fields and checkboxes shown when a user catches a Pokemon. Corresponds to all the properties of CaughtPokemon.*@
 <div class="row">
     <div class="caught-create-info-card col-md-4">
         <form asp-action="Create">
@@ -75,6 +79,7 @@
     </div>
 </div>
 
+@*A link to take the user back to the Dex view*@
 <div class="back-btn-container">
     <a asp-controller="Pokemon" asp-action="Dex">Back to Dex</a>
 </div>

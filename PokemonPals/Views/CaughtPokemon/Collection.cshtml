@@ -12,22 +12,41 @@
 
 <hr />
 
+@*A container for multiple links that will allow the user to sort their Pokemon collection on different properties, like Nickname, Favorite, Level, etc.*@
+<div class="collection-sort">
+    Sort by:
+    @Html.ActionLink("Species", "Collection", new { sortOrder = ViewBag.SpeciesSortParm }) |
+    @Html.ActionLink("Favorite", "Collection", new { sortOrder = ViewBag.FavoriteSortParm }) |
+    @Html.ActionLink("Open to Trade", "Collection", new { sortOrder = ViewBag.TradeSortParm }) |
+    @Html.ActionLink("Level", "Collection", new { sortOrder = ViewBag.LevelSortParm }) |
+    @Html.ActionLink("CP", "Collection", new { sortOrder = ViewBag.CPSortParm }) |
+    @Html.ActionLink("Nickname", "Collection", new { sortOrder = ViewBag.NicknameSortParm }) |
+    @Html.ActionLink("Comment", "Collection", new { sortOrder = ViewBag.CommentSortParm })
+</div>
+
 <div class="collection-container">
+    
     @{
+        //if the list passed to this view is empty, we're going to prompt the user to add a Pokemon to their collection
         if (Model.Count() == 0)
         {
             <h4>You don't have any Pokemon! Go <a asp-controller="Pokemon" asp-action="Dex">add some!</a></h4>
         }
+        //Loops through the CaughtPokemon passed to the View
         foreach (CaughtPokemon PokemonInCollection in Model)
         {
+            //Creates a capitalized version of the Pokemon's name
             string capitalName = char.ToUpper(PokemonInCollection.Pokemon.Name[0]) + PokemonInCollection.Pokemon.Name.Substring(1);
 
+            //A card for displaying a single Pokemon
             <div class="collection-card">
+                @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
                 <a asp-controller="CaughtPokemon" asp-action="Edit" asp-route-id="@PokemonInCollection.Id">
                     <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
                 </a>
 
                 <div class="collection-card-info">
+                    @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
                     @if (PokemonInCollection.Nickname != null)
                     {
                         <h4 class="dex-details-red-text row">
@@ -44,12 +63,15 @@
                             </a>
                         </h4>
                     }
+
+                    @*Shows the Pokemon's level and CP properties*@
                     <div class="dex-details-red-text row">Level @PokemonInCollection.Level</div>
 
                     <div class="dex-details-red-text row">
                         @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
                     </div>
 
+                    @*Displays if the Pokemon is the one of the user's Favorites, or eligible for a Trade*@
                     <div class="row">
                         @{
                             string favoriteOrTradeString = "";
@@ -69,10 +91,13 @@
                             @favoriteOrTradeString
                         }
                     </div>
+
+                    @*Displays the date the Pokemon was caught*@
                     <div class="row">
                         Caught on @PokemonInCollection.DateCaught.ToShortDateString()
                     </div>
 
+                    @*Displays a short user-attached comment, if one exists*@
                     @{
                         if (PokemonInCollection.Comment != null)
                         {

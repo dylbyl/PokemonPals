@@ -22,6 +22,7 @@ namespace PokemonPals.Models
         public int Level { get; set; }
         public int CP { get; set; }
         public int GenderId { get; set; }
+        [StringLength(40)]
         public string Comment { get; set; }
         public Gender Gender { get; set; }
         public Boolean isHidden { get; set; }
