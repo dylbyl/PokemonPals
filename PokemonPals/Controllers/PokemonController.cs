@@ -32,7 +32,7 @@ namespace PokemonPals.Controllers
 
         // A method for fetching all Pokemon in the database, and returning a view of them
         [Authorize]
-        public async Task<IActionResult> Dex()
+        public async Task<IActionResult> Dex(string sortOrder, string searchString)
         {
             //Gets the currently logged in user
             ApplicationUser currentUser = await GetCurrentUserAsync();
@@ -41,7 +41,38 @@ namespace PokemonPals.Controllers
             PokemonAndCaughtPokemonViewModel model = new PokemonAndCaughtPokemonViewModel();
 
             //Fetches all Pokemon entries in the database and adds them to a list
-            model.AllPokemon = await _context.Pokemon.ToListAsync();
+            model.AllPokemon = await _context.Pokemon.OrderBy(p => p.PokedexNumber).ToListAsync();
+
+            //Runs if a search term has been entered on the Dex view
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                //Uses a LINQ Where statement to find any Pokemon whose name contains the search string
+                model.AllPokemon = model.AllPokemon.Where(p => p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+                //These lines check to see if a parameter was passed to this method to determine if the collection is sorted. If so, the data stored in the ViewBag is switched to the inverse sortOrder string, so that when the user clicks the sort link a second time, the sort order will be reversed.
+                ViewBag.NumberSortParm = String.IsNullOrEmpty(sortOrder) ? "number_desc" : "";
+            ViewBag.NameSortParm = sortOrder == "name_asc" ? "name_desc" : "name_asc";
+
+            ViewBag.SortOrderString = sortOrder;
+            ViewBag.SearchString = searchString;
+
+            //A switch-case that checks the sortOrder string, and properly sorts the Pokedex accordingly
+            switch (sortOrder)
+            {
+                case "number_desc":
+                    model.AllPokemon = model.AllPokemon.OrderByDescending(p => p.PokedexNumber).ToList();
+                    break;
+                case "name_desc":
+                    model.AllPokemon = model.AllPokemon.OrderByDescending(p => p.Name).ToList();
+                    break;
+                case "name_asc":
+                    model.AllPokemon = model.AllPokemon.OrderBy(p => p.Name).ToList();
+                    break;
+                default:
+                    model.AllPokemon = model.AllPokemon.OrderBy(p => p.PokedexNumber).ToList();
+                    break;
+            }
 
             //Gets a list of all the Pokemon the current user has caught (and have not been soft-deleted)
             List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
