@@ -11,8 +11,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PokemonPals.Data;
 using PokemonPals.Models;
 
 namespace PokemonPals.Areas.Identity.Pages.Account
@@ -24,17 +27,19 @@ namespace PokemonPals.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -52,6 +57,10 @@ namespace PokemonPals.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
+
+            [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -61,10 +70,33 @@ namespace PokemonPals.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            [Display(Name = "About me")]
+            public string Description { get; set; }
+            [Display(Name = "Switch Friend Code")]
+            public string SwitchCode { get; set; }
+            [Display(Name = "Discord username")]
+            public string DiscordUsername { get; set; }
+            [Display(Name = "Favorite Pokemon game")]
+            public int? GameId { get; set; }
+            public List<SelectListItem> GameItems { get; set; }
+            [Display(Name = "Favorite starter")]
+            public int? AvatarId { get; set; }
+            public List<SelectListItem> AvatarItems { get; set; }
         }
+
+        
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            List<Game> GameList = await _context.Game.ToListAsync();
+            List<Avatar> AvatarList = await _context.Avatar.ToListAsync();
+
+            Input = new InputModel
+            {
+                GameItems = new SelectList(GameList, "Id", "Name").ToList(),
+                AvatarItems = new SelectList(AvatarList, "Id", "Name").ToList()
+            };
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -75,7 +107,7 @@ namespace PokemonPals.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, AvatarId = null, GameId = null };
+                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, AvatarId = null, GameId = null };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
