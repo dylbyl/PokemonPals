@@ -13,10 +13,12 @@
     flex-basis: 18%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     margin: 1em;
+    margin-left: 6px;
+    margin-right: 6px;
 }
 
     .collection-card:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
         box-shadow: 0 4px 16px 0 rgba(0,0,0,0.2);
     }
 

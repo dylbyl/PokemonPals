@@ -42,6 +42,7 @@ namespace PokemonPals.Controllers
             List<CaughtPokemon> FullUserCollection = await _context.CaughtPokemon
                                                             .Include(cp => cp.Pokemon)
                                                             .Include(cp => cp.Gender)
+                                                            .Where(cp => cp.isOwned == true)
                                                             .Where(cp => cp.UserId == currentUser.Id)
                                                             .Where(cp => cp.isHidden == false)
                                                             .OrderBy(cp => cp.PokemonId)
