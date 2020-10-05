@@ -18,12 +18,37 @@
     margin: 30px;
     padding: 1em;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    min-width: 200px;
 }
 
-.profile-text {
-    text-overflow: ellipsis;
+.profile-card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: auto;
+    flex-wrap: wrap;
+    max-width: 610px;
+    min-width: 450px;
+}
+
+.profile-card {
+    border-radius: 8px;
+    background-color: #ff9f9a;
+    padding: 1em;
+    flex-basis: 19%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    margin: 1em;
+}
+
+.profile-text{
     word-wrap: break-word;
-    display: block;
-    line-height: 1em; /* a */
-    max-height: 2em; /* a x number of line to show (ex : 2 line)  */
+}
+
+    .profile-card:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 16px 0 rgba(0,0,0,0.2);
+    }
+
+.profile-card-info > .row {
+    margin: 0;
 }
