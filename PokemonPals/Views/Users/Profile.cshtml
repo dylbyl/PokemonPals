@@ -1,0 +1,49 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = $"{@Model.UserName}'s Profile";
+}
+
+<div class="col-sm-4 profile-info">
+    <div class="global-header">
+        <h1 class="profile-text">@Model.UserName</h1>
+    </div>
+    <img class="profile-img" src=@Model.Avatar.ImageURL />
+    <dl>
+        <dt class="dex-details-red-text">
+            About Me
+        </dt>
+        <dd>
+            @Model.Description
+        </dd>
+        <dt class="dex-details-red-text">
+            Switch Friend Code
+        </dt>
+        <dd>
+            @Model.SwitchCode
+        </dd>
+        <dt class="dex-details-red-text">
+            Discord Username
+        </dt>
+        <dd>
+            @Model.DiscordUsername
+        </dd>
+        <dt class="dex-details-red-text">
+            Favorite Game
+        </dt>
+        <dd>
+            @Model.Game.Name
+        </dd>
+    </dl>
+
+    @if (ViewBag.isOwnProfile)
+    {
+        <a class="profile-text" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Edit Your Profile</a>
+    }
+</div>
+
+<div class="col">
+
+</div>

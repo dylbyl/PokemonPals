@@ -28,8 +28,6 @@ namespace PokemonPals.Areas.Identity.Pages.Account.Manage
             _context = context;
         }
 
-        public string Username { get; set; }
-
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -38,6 +36,7 @@ namespace PokemonPals.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+            [Required]
             [Display(Name = "Username")]
             public string UserName { get; set; }
             [Display(Name = "About me")]
