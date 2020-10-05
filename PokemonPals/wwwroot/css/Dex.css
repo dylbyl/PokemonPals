@@ -1,14 +1,15 @@
 ﻿.dex-card {
     border-radius: 8px;
     background-color: #ffe8e7;
-    margin: 30px;
+    margin: 10px;
     text-align: center;
-    padding: 1em;
+    padding: 6px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    flex-basis: 9%;
 }
 
     .dex-card:hover {
-        transform: scale(1.25);
+        transform: scale(1.1);
         box-shadow: 0 4px 16px 0 rgba(0,0,0,0.2);
     }
     

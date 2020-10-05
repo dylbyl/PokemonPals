@@ -86,7 +86,7 @@ namespace PokemonPals.Controllers
                                             .Where(cp => cp.UserId == id)
                                             .Where(cp => cp.isFavorite == true)
                                             .OrderBy(cp => cp.PokemonId)
-                                            .Take(12)
+                                            .Take(10)
                                             .ToListAsync();
 
             model.TradePokemon = await _context.CaughtPokemon
@@ -97,7 +97,7 @@ namespace PokemonPals.Controllers
                                             .Where(cp => cp.UserId == id)
                                             .Where(cp => cp.isTradeOpen == true)
                                             .OrderBy(cp => cp.PokemonId)
-                                            .Take(12)
+                                            .Take(10)
                                             .ToListAsync();
 
             return View(model);

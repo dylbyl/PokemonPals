@@ -4,11 +4,11 @@
     ViewData["Title"] = $"{@Model.ViewedUser.UserName}'s Profile";
 }
 
-<div class="row">
-    <div class="col-sm-4">
+<div class="profile-row">
+    <div class="col profile-info-col">
         <div class="profile-info">
             <div class="global-header profile-text">
-                <h5>@Model.ViewedUser.UserName</h5>
+                <h4>@Model.ViewedUser.UserName</h4>
             </div>
             <img class="profile-img" src=@Model.ViewedUser.Avatar.ImageURL />
             <dl>
@@ -49,61 +49,98 @@
         </div>
     </div>
 
-    <div class="col">
-        <h3 class="global-header">Favorites</h3>
-        <br />
-        @{
-            if (Model.FavoritePokemon.Count() != 0)
-            {
-                <div class="profile-card-container">
-                    @foreach (CaughtPokemon SingleFavorite in Model.FavoritePokemon)
-                    {
-                        //A card for displaying a single Pokemon
-                        <div class="profile-card">
-                            @*The sprite image of the Pokemon.*@
-                            <img class="sprite-img" src=@SingleFavorite.Pokemon.RBSpriteURL />
+    <div class="col-sm-8 profile-collection-col">
+        <div class="profile-info">
+            <h3 class="profile-header">Favorites</h3>
+            @{
+                if (Model.FavoritePokemon.Count() != 0)
+                {
+                    <div class="profile-card-container">
+                        @foreach (CaughtPokemon SingleFavorite in Model.FavoritePokemon)
+                        {
+                            //A card for displaying a single Pokemon
+                            <div class="profile-card">
+                                @*The sprite image of the Pokemon.*@
+                                <img class="sprite-img" src=@SingleFavorite.Pokemon.RBSpriteURL />
 
-                            <div class="profile-card-info">
-                                @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
-                                @if (SingleFavorite.Nickname != null)
-                                {
-                                    <h4 class="dex-details-red-text row">
-                                        @SingleFavorite.Nickname
-                                    </h4>
-                                }
-                                else
-                                {
-                                    <h4 class="dex-details-red-text row">
-                                        @SingleFavorite.Pokemon.Name
-                                    </h4>
-                                }
+                                <div class="profile-card-info">
+                                    @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+                                    @if (SingleFavorite.Nickname != null)
+                                    {
+                                        <h4 class="dex-details-red-text row">
+                                            @SingleFavorite.Nickname
+                                        </h4>
+                                    }
+                                    else
+                                    {
+                                        <h4 class="dex-details-red-text row">
+                                            @SingleFavorite.Pokemon.Name
+                                        </h4>
+                                    }
 
-                                @*Shows the Pokemon's level and CP properties*@
-                                <div class="dex-details-red-text row">Level @SingleFavorite.Level</div>
+                                    @*Shows the Pokemon's level and CP properties*@
+                                    <div class="dex-details-red-text row">Level @SingleFavorite.Level</div>
 
-                                <div class="dex-details-red-text row">
-                                    @SingleFavorite.Gender.Name, @SingleFavorite.CP CP
+                                    <div class="dex-details-red-text row">
+                                        @SingleFavorite.Gender.Name
+                                        <br />
+                                        @SingleFavorite.CP CP
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>@ownProfileString have any Favorite Pokemon!</p>
+                }
             }
-            else
-            {
-                <p>@ownProfileString have any Favorite Pokemon!</p>
-            }
-        }
-        <h3 class="global-header">Open for trade</h3>
-        @{
-            if (Model.TradePokemon.Count() != 0)
-            {
+        </div>
+        <div class="profile-info">
+            <h3 class="profile-header">Open for trade</h3>
+            @{
+                if (Model.TradePokemon.Count() != 0)
+                {
+                    <div class="profile-card-container">
+                        @foreach (CaughtPokemon SingleTrade in Model.TradePokemon)
+                        {
+                            //A card for displaying a single Pokemon
+                            <div class="profile-card">
+                                @*The sprite image of the Pokemon.*@
+                                <img class="sprite-img" src=@SingleTrade.Pokemon.RBSpriteURL />
 
+                                <div class="profile-card-info">
+                                    @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+                                    @if (SingleTrade.Nickname != null)
+                                    {
+                                        <h4 class="dex-details-red-text row">
+                                            @SingleTrade.Nickname
+                                        </h4>
+                                    }
+                                    else
+                                    {
+                                        <h4 class="dex-details-red-text row">
+                                            @SingleTrade.Pokemon.Name
+                                        </h4>
+                                    }
+
+                                    @*Shows the Pokemon's level and CP properties*@
+                                    <div class="dex-details-red-text row">Level @SingleTrade.Level</div>
+
+                                    <div class="dex-details-red-text row">
+                                        @SingleTrade.Gender.Name, @SingleTrade.CP CP
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>@ownProfileString have any Pokemon up for trade!</p>
+                }
             }
-            else
-            {
-                <p>@ownProfileString have any Pokemon up for trade!</p>
-            }
-        }
+        </div>
     </div>
 </div>
