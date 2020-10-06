@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = $"{@Model.ViewedUser.UserName}'s Profile";
+
 }
 
 <div class="profile-row">
@@ -47,9 +48,29 @@
                 }
             }
         </div>
+
+        <div class="global-header">
+            <h3>Dex Stats</h3>
+            @{
+                decimal totalCount = 0;
+                if (Model.CaughtPokemonIDs != null)
+                {
+                    totalCount = Model.CaughtPokemonIDs.Count();
+                }
+                decimal totalPercent = (totalCount / Model.AllPokemonCount) * 100;
+                string percentString = totalPercent.ToString("0.##");
+
+                <div class="dex-progress-bar">
+                    <div class="dex-progress-completion" style="width:@percentString%"></div>
+                    <p class="dex-progress-text">@totalCount of @Model.AllPokemonCount caught // @percentString%</p>
+                </div>
+            }
+        </div>
     </div>
 
     <div class="col-sm-8 profile-collection-col">
+
+
         <div class="profile-info">
             <h3 class="profile-header">Favorites</h3>
             @{
@@ -93,7 +114,10 @@
                 }
                 else
                 {
-                    <p>@ownProfileString have any Favorite Pokemon!</p>
+                    <br />
+                    <div class="profile-center">
+                        <p>@ownProfileString have any Favorite Pokemon!</p>
+                    </div>
                 }
             }
         </div>
@@ -138,7 +162,10 @@
                 }
                 else
                 {
-                    <p>@ownProfileString have any Pokemon up for trade!</p>
+                    <br />
+                    <div class="profile-center">
+                        <p>@ownProfileString have any Pokemon up for trade!</p>
+                    </div>
                 }
             }
         </div>

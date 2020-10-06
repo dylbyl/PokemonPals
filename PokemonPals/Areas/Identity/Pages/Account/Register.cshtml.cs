@@ -107,7 +107,17 @@ namespace PokemonPals.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, AvatarId = null, GameId = null };
+               // Input.UserName = Input.UserName.Replace(" ", "");
+
+                var user = new ApplicationUser { 
+                    UserName = Input.UserName, 
+                    Email = Input.Email, 
+                    AvatarId = Input.AvatarId,
+                    GameId = Input.GameId,
+                    Description = Input.Description,
+                    SwitchCode = Input.SwitchCode,
+                    DiscordUsername = Input.DiscordUsername
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -139,6 +149,15 @@ namespace PokemonPals.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
+            List<Game> GameList = await _context.Game.ToListAsync();
+            List<Avatar> AvatarList = await _context.Avatar.ToListAsync();
+
+            Input = new InputModel
+            {
+                GameItems = new SelectList(GameList, "Id", "Name").ToList(),
+                AvatarItems = new SelectList(AvatarList, "Id", "Name").ToList()
+            };
 
             // If we got this far, something failed, redisplay form
             return Page();
