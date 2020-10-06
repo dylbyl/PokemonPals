@@ -45,6 +45,7 @@ namespace PokemonPals.Controllers
                                                             .Where(cp => cp.isOwned == true)
                                                             .Where(cp => cp.UserId == currentUser.Id)
                                                             .Where(cp => cp.isHidden == false)
+                                                            .Where(cp => cp.isOwned == true)
                                                             .OrderBy(cp => cp.PokemonId)
                                                             .ToListAsync();
 
