@@ -74,15 +74,33 @@ namespace PokemonPals.Controllers
                 return NotFound();
             }
 
+            //Gets a list of all the Pokemon the current user has caught (and have not been soft-deleted)
+            List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
+                                                            .Where(cp => cp.UserId == currentUser.Id)
+                                                            .Where(cp => cp.isHidden == false)
+                                                            .ToListAsync();
+
+            //Loops through the list of Pokemon the user owns, so that we can get their IDs
+            foreach (CaughtPokemon caughtPokemon in listOfUserCaughtPokemon)
+            {
+                //If this list does not already contain the species of Pokemon we're currently looking at...
+                if (!model.CurrentUserCollection.Contains(caughtPokemon.PokemonId))
+                {
+                    //...add it to the list of IDs
+                    model.CurrentUserCollection.Add(caughtPokemon.PokemonId);
+                }
+            }
+
             List<Pokemon> AllPokemon = await _context.Pokemon.ToListAsync();
             model.AllPokemonCount = AllPokemon.Count();
 
             model.UserCollection = await _context.CaughtPokemon
                                             .Include(cp => cp.Pokemon)
                                             .Include(cp => cp.Gender)
+                                            .Include(cp => cp.User)
                                             .Where(cp => cp.isOwned == true)
                                             .Where(cp => cp.isHidden == false)
-                                            .Where(cp => cp.UserId == id)
+                                            .Where(cp => cp.User.UserName == id)
                                             .OrderBy(cp => cp.PokemonId)
                                             .ToListAsync();
 
@@ -97,24 +115,112 @@ namespace PokemonPals.Controllers
             model.FavoritePokemon = await _context.CaughtPokemon
                                             .Include(cp => cp.Pokemon)
                                             .Include(cp => cp.Gender)
+                                            .Include(cp => cp.User)
                                             .Where(cp => cp.isHidden == false)
                                             .Where(cp => cp.isOwned == true)
-                                            .Where(cp => cp.UserId == id)
+                                            .Where(cp => cp.User.UserName == id)
                                             .Where(cp => cp.isFavorite == true)
                                             .OrderBy(cp => cp.PokemonId)
-                                            .Take(10)
+                                            .Take(5)
                                             .ToListAsync();
 
             model.TradePokemon = await _context.CaughtPokemon
                                             .Include(cp => cp.Pokemon)
                                             .Include(cp => cp.Gender)
+                                            .Include(cp => cp.User)
                                             .Where(cp => cp.isHidden == false)
                                             .Where(cp => cp.isOwned == true)
-                                            .Where(cp => cp.UserId == id)
+                                            .Where(cp => cp.User.UserName == id)
                                             .Where(cp => cp.isTradeOpen == true)
                                             .OrderBy(cp => cp.PokemonId)
-                                            .Take(10)
+                                            .Take(5)
                                             .ToListAsync();
+
+            return View(model);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Trades(string id)
+        {
+            UserCollectionViewModel model = new UserCollectionViewModel();
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+            model.ViewedUser = await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == id);
+
+            if(model.ViewedUser == null)
+            {
+                return NotFound();
+            }
+
+            model.ViewedCollection = await _context.CaughtPokemon
+                                                    .Include(cp => cp.User)
+                                                    .Include(cp => cp.Gender)
+                                                    .Include(cp => cp.Pokemon)
+                                                    .Where(cp => cp.User.UserName == id)
+                                                    .Where(cp => cp.isHidden == false)
+                                                    .Where(cp => cp.isOwned == true)
+                                                    .Where(cp => cp.isTradeOpen == true)
+                                                    .OrderBy(cp => cp.PokemonId)
+                                                    .ToListAsync();
+
+            //Gets a list of all the Pokemon the current user has caught (and have not been soft-deleted)
+            List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
+                                                            .Where(cp => cp.UserId == currentUser.Id)
+                                                            .Where(cp => cp.isHidden == false)
+                                                            .ToListAsync();
+
+            //Loops through the list of Pokemon the user owns, so that we can get their IDs
+            foreach (CaughtPokemon caughtPokemon in listOfUserCaughtPokemon)
+            {
+                //If this list does not already contain the species of Pokemon we're currently looking at...
+                if (!model.CurrentUserCollection.Contains(caughtPokemon.PokemonId))
+                {
+                    //...add it to the list of IDs
+                    model.CurrentUserCollection.Add(caughtPokemon.PokemonId);
+                }
+            }
+
+            return View(model);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Favorites(string id)
+        {
+            UserCollectionViewModel model = new UserCollectionViewModel();
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+            model.ViewedUser = await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == id);
+
+            if (model.ViewedUser == null)
+            {
+                return NotFound();
+            }
+
+            model.ViewedCollection = await _context.CaughtPokemon
+                                                    .Include(cp => cp.User)
+                                                    .Include(cp => cp.Gender)
+                                                    .Include(cp => cp.Pokemon)
+                                                    .Where(cp => cp.User.UserName == id)
+                                                    .Where(cp => cp.isHidden == false)
+                                                    .Where(cp => cp.isOwned == true)
+                                                    .Where(cp => cp.isFavorite == true)
+                                                    .OrderBy(cp => cp.PokemonId)
+                                                    .ToListAsync();
+
+            //Gets a list of all the Pokemon the current user has caught (and have not been soft-deleted)
+            List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
+                                                            .Where(cp => cp.UserId == currentUser.Id)
+                                                            .Where(cp => cp.isHidden == false)
+                                                            .ToListAsync();
+
+            //Loops through the list of Pokemon the user owns, so that we can get their IDs
+            foreach (CaughtPokemon caughtPokemon in listOfUserCaughtPokemon)
+            {
+                //If this list does not already contain the species of Pokemon we're currently looking at...
+                if (!model.CurrentUserCollection.Contains(caughtPokemon.PokemonId))
+                {
+                    //...add it to the list of IDs
+                    model.CurrentUserCollection.Add(caughtPokemon.PokemonId);
+                }
+            }
 
             return View(model);
         }

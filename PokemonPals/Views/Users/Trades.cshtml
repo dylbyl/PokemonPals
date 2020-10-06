@@ -1,0 +1,62 @@
+﻿@model PokemonPals.Models.ViewModels.UserCollectionViewModel;
+
+@{
+    ViewData["Title"] = $"{@Model.ViewedUser.UserName}'s Trades";
+
+}
+
+<div class="global-header">
+    <h1>@Model.ViewedUser.UserName's Open for Trade Pokemon</h1>
+</div>
+
+<hr />
+@{
+    if (Model.ViewedCollection.Count() == 0)
+    {
+    <div class="profile-center">
+        This user does not have any Pokemon up for trade!
+    </div>
+    }
+    else
+    {
+        <div class="collection-container">
+            @foreach (CaughtPokemon PokemonInCollection in Model.ViewedCollection)
+            {
+                string tradeCaught = "";
+                if (Model.CurrentUserCollection.Contains(PokemonInCollection.PokemonId))
+                {
+                    tradeCaught = "dex-caught";
+                }
+
+                //A card for displaying a single Pokemon
+                <div class="collection-card @tradeCaught">
+                    @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
+                    <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
+
+                    <div class="collection-card-info">
+                        @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+                        @if (PokemonInCollection.Nickname != null)
+                        {
+                            <h4 class="dex-details-red-text row">
+                                @PokemonInCollection.Nickname
+                            </h4>
+                        }
+                        else
+                        {
+                            <h4 class="dex-details-red-text row">
+                                @PokemonInCollection.Pokemon.Name
+                            </h4>
+                        }
+
+                        @*Shows the Pokemon's level and CP properties*@
+                        <div class="dex-details-red-text row">Level @PokemonInCollection.Level</div>
+
+                        <div class="dex-details-red-text row">
+                            @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}

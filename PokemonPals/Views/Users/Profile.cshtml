@@ -71,16 +71,26 @@
     <div class="col-sm-8 profile-collection-col">
 
 
-        <div class="profile-info">
-            <h3 class="profile-header">Favorites</h3>
+        <div>
+            <h3 class="profile-header">
+                <a asp-controller="Users" asp-action="Favorites" asp-route-id=@Model.ViewedUser.UserName>
+                    Favorites
+                </a>
+            </h3>
             @{
                 if (Model.FavoritePokemon.Count() != 0)
                 {
                     <div class="profile-card-container">
                         @foreach (CaughtPokemon SingleFavorite in Model.FavoritePokemon)
                         {
+                            string favoriteCaught = "";
+                            if (Model.CurrentUserCollection.Contains(SingleFavorite.PokemonId))
+                            {
+                                favoriteCaught = "dex-caught";
+                            }
+
                             //A card for displaying a single Pokemon
-                            <div class="profile-card">
+                            <div class="profile-card @favoriteCaught">
                                 @*The sprite image of the Pokemon.*@
                                 <img class="sprite-img" src=@SingleFavorite.Pokemon.RBSpriteURL />
 
@@ -121,16 +131,26 @@
                 }
             }
         </div>
-        <div class="profile-info">
-            <h3 class="profile-header">Open for trade</h3>
+        <div>
+            <h3 class="profile-header">
+                <a asp-controller="Users" asp-action="Trades" asp-route-id=@Model.ViewedUser.UserName>
+                    Open for Trade
+                </a>
+            </h3>
             @{
                 if (Model.TradePokemon.Count() != 0)
                 {
                     <div class="profile-card-container">
                         @foreach (CaughtPokemon SingleTrade in Model.TradePokemon)
                         {
+                            string tradeCaught = "";
+                            if (Model.CurrentUserCollection.Contains(SingleTrade.PokemonId))
+                            {
+                                tradeCaught = "dex-caught";
+                            }
+
                             //A card for displaying a single Pokemon
-                            <div class="profile-card">
+                            <div class="profile-card @tradeCaught">
                                 @*The sprite image of the Pokemon.*@
                                 <img class="sprite-img" src=@SingleTrade.Pokemon.RBSpriteURL />
 

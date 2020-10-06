@@ -12,6 +12,7 @@ namespace PokemonPals.Models.ViewModels
         public List<CaughtPokemon> UserCollection = new List<CaughtPokemon>();
         public int AllPokemonCount = 0;
         public List<int> CaughtPokemonIDs = new List<int>();
+        public List<int> CurrentUserCollection = new List<int>();
         public List<CaughtPokemon> FavoritePokemon = new List<CaughtPokemon>();
         public List<CaughtPokemon> TradePokemon = new List<CaughtPokemon>();
     }
