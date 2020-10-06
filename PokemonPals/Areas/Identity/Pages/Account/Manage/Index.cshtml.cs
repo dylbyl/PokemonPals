@@ -97,6 +97,8 @@ namespace PokemonPals.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+            //Input.UserName = Input.UserName.Replace(" ", "");
+
             user.UserName = Input.UserName;
             user.Description = Input.Description;
             user.SwitchCode = Input.SwitchCode;
@@ -104,10 +106,23 @@ namespace PokemonPals.Areas.Identity.Pages.Account.Manage
             user.GameId = Input.GameId;
             user.AvatarId = Input.AvatarId;
 
-            await _userManager.UpdateAsync(user);
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
-            return RedirectToPage();
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                await _signInManager.RefreshSignInAsync(user);
+                StatusMessage = "Your profile has been updated";
+                return RedirectToPage();
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            user = await _userManager.GetUserAsync(User);
+            await LoadAsync(user);
+
+            // If we got this far, something failed, redisplay form
+            return Page();
         }
     }
 }

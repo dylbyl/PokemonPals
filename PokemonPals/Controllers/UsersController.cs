@@ -29,20 +29,33 @@ namespace PokemonPals.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> UserSearch(string searchString)
         {
-            return View();
+            List<ApplicationUser> usersInSearch = await _userManager.Users
+                                                    .Include(user => user.Avatar)
+                                                    .OrderBy(user => user.UserName)
+                                                    .ToListAsync();
+
+            ViewBag.SearchString = searchString;
+
+            if(searchString != null && searchString != "")
+            {
+                usersInSearch = usersInSearch
+                                        .Where(user => user.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                                        .ToList();
+            }
+
+            return View(usersInSearch);
         }
 
         [Authorize]
         public async Task<IActionResult> Profile(string id)
         {
             UserProfileViewModel model = new UserProfileViewModel();
-            
-            if(id == null)
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+
+            if (id == currentUser.UserName)
             {
-                ApplicationUser currentUser = await GetCurrentUserAsync();
-                id = currentUser.Id;
                 model.isOwnProfile = true;
             }
             else
@@ -54,12 +67,15 @@ namespace PokemonPals.Controllers
             model.ViewedUser = await _userManager.Users
                                 .Include(user => user.Game)
                                 .Include(user => user.Avatar)
-                                .FirstOrDefaultAsync(user => user.Id == id);
+                                .FirstOrDefaultAsync(user => user.UserName == id);
 
             if (model.ViewedUser == null)
             {
                 return NotFound();
             }
+
+            List<Pokemon> AllPokemon = await _context.Pokemon.ToListAsync();
+            model.AllPokemonCount = AllPokemon.Count();
 
             model.UserCollection = await _context.CaughtPokemon
                                             .Include(cp => cp.Pokemon)

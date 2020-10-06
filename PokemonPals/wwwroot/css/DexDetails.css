@@ -46,6 +46,10 @@
     color: white;
 }
 
+.dex-details-black-text {
+    color: black;
+}
+
 dl.row{
     margin-top: 5px;
     margin-bottom: 5px;
