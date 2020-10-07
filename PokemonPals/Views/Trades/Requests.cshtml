@@ -1,0 +1,81 @@
+﻿@model PokemonPals.Models.ViewModels.TradeRequestViewModel;
+
+@{
+    ViewData["Title"] = $"Trade Requests";
+    string searchString = ViewBag.SearchString;
+}
+
+<div class="global-header">
+    <h1>Trade Requests</h1>
+</div>
+<div class="row collection-sort profile-center">
+    @using (Html.BeginForm())
+    {
+        <p>
+            Search by species name: <br />
+            @Html.TextBox("searchString") <input type="submit" value="Search" />
+        </p>
+    }
+</div>
+<hr />
+
+@{
+    if (searchString == null || searchString == "")
+    {
+        <div class="profile-center">
+            <h4 class="dex-details-red-text">Recently Caught Pokemon Open for Trade</h4>
+            <p>Please enter a search query to lookup specific Pokemon to trade!</p>
+        </div>
+    }
+    else
+    {
+        <div class="profile-center">
+            <h4 class="dex-details-red-text">Results for "@searchString"</h4>
+        </div>
+    }
+    if (Model.SearchResults.Count() == 0)
+    {
+        <div class="profile-center">
+            <p>Sorry, no Pokemon could be found. Please try again!</p>
+        </div>
+    }
+    else
+    {
+        <div class="collection-container">
+            @foreach (CaughtPokemon PokemonInSearch in Model.SearchResults)
+            {
+                <div class="collection-card">
+                    @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
+                    <img class="sprite-img" src=@PokemonInSearch.Pokemon.RBSpriteURL />
+
+                    <div class="collection-card-info">
+                        @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+                        @if (PokemonInSearch.Nickname != null)
+                        {
+                            <h4 class="dex-details-red-text row">
+                                @PokemonInSearch.Nickname
+                            </h4>
+                        }
+                        else
+                        {
+                            <h4 class="dex-details-red-text row">
+                                @PokemonInSearch.Pokemon.Name
+                            </h4>
+                        }
+
+                        @*Shows the Pokemon's level and CP properties*@
+                        <div class="dex-details-red-text row">Level @PokemonInSearch.Level</div>
+
+                        <div class="dex-details-red-text row">
+                            @PokemonInSearch.Gender.Name, @PokemonInSearch.CP CP
+                        </div>
+                        <div class="row">
+                            <a class="dex-details-white-text" asp-controller="Users" asp-action="Profile" asp-route-id=@PokemonInSearch.User.UserName>Owned by @PokemonInSearch.User.UserName</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+

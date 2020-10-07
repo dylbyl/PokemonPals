@@ -116,7 +116,7 @@
         //if the list passed to this view is empty, we're going to prompt the user to add a Pokemon to their collection
         if (Model.Count() == 0)
         {
-            <h4>You don't have any Pokemon! Go <a asp-controller="Pokemon" asp-action="Dex">add some!</a></h4>
+            <h4>You don't have any Pokemon! <a asp-controller="Pokemon" asp-action="Dex">Go catch some!</a></h4>
         }
         //Loops through the CaughtPokemon passed to the View
         foreach (CaughtPokemon PokemonInCollection in Model)
