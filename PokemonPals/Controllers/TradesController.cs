@@ -48,7 +48,8 @@ namespace PokemonPals.Controllers
             if (searchString != null && searchString != "")
             {
                 model.SearchResults = model.SearchResults
-                                        .Where(cp => cp.Pokemon.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                                        .Where(cp => (cp.Nickname ?? "").Contains(searchString, StringComparison.OrdinalIgnoreCase)
+                                       || cp.Pokemon.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                                         .ToList();
             }
             else
