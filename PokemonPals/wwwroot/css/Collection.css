@@ -15,6 +15,8 @@
     margin: 1em;
     margin-left: 6px;
     margin-right: 6px;
+    display: flex;
+    flex-direction: column;
 }
 
     .collection-card:hover {
@@ -24,6 +26,10 @@
 
 .collection-card-info > .row{
     margin: 0;
+}
+
+.collection-card-info{
+    flex: 1;
 }
 
 .collection-sort{

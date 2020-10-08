@@ -1,4 +1,4 @@
-﻿@model PokemonPals.Models.ViewModels.TradeRequestViewModel;
+﻿@model PokemonPals.Models.ViewModels.TradeIndexViewModel;
 
 @{
     ViewData["Title"] = $"Trade Requests";
@@ -22,7 +22,7 @@
 @{
     if (searchString == null || searchString == "")
     {
-        <div class="profile-center">
+        <div class="global-header">
             <h4 class="dex-details-red-text">Recently Caught Pokemon Open for Trade</h4>
             <p>Please enter a search query to lookup specific Pokemon to trade!</p>
         </div>
@@ -44,23 +44,35 @@
         <div class="collection-container">
             @foreach (CaughtPokemon PokemonInSearch in Model.SearchResults)
             {
-                <div class="collection-card">
+                string tradeCaught = "";
+                @if (Model.CurrentUserCollection.Contains(PokemonInSearch.PokemonId))
+                {
+                    tradeCaught = "dex-caught";
+                }
+                <div class="profile-card-expand @tradeCaught">
                     @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
-                    <img class="sprite-img" src=@PokemonInSearch.Pokemon.RBSpriteURL />
+                    <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@PokemonInSearch.Id>
+                        <img class="sprite-img" src=@PokemonInSearch.Pokemon.RBSpriteURL />
+                    </a>
 
-                    <div class="collection-card-info">
+                    <div class="profile-card-info">
                         @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
                         @if (PokemonInSearch.Nickname != null)
                         {
                             <h4 class="dex-details-red-text row">
-                                @PokemonInSearch.Nickname
+                                <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@PokemonInSearch.Id>
+                                    @PokemonInSearch.Nickname
+                                </a>
                             </h4>
                         }
                         else
                         {
                             <h4 class="dex-details-red-text row">
-                                @PokemonInSearch.Pokemon.Name
+                                <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@PokemonInSearch.Id>
+                                    @PokemonInSearch.Pokemon.Name
+                                </a>
                             </h4>
+
                         }
 
                         @*Shows the Pokemon's level and CP properties*@
@@ -70,9 +82,13 @@
                             @PokemonInSearch.Gender.Name, @PokemonInSearch.CP CP
                         </div>
                         <div class="row">
-                            <a class="dex-details-white-text" asp-controller="Users" asp-action="Profile" asp-route-id=@PokemonInSearch.User.UserName>Owned by @PokemonInSearch.User.UserName</a>
+                            <a class="dex-details-black-text" asp-controller="Users" asp-action="Profile" asp-route-id=@PokemonInSearch.User.UserName>Owned by @PokemonInSearch.User.UserName</a>
                         </div>
                     </div>
+
+                    <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@PokemonInSearch.Id>
+                        <button class="btn trade-btn">Request Trade</button>
+                    </a>
                 </div>
             }
         </div>

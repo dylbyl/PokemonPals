@@ -1,0 +1,86 @@
+﻿@model PokemonPals.Models.ViewModels.TradeRequestViewModel;
+
+@{
+    ViewData["Title"] = $"Trade Requests";
+    string desiredNickname = (Model.DesiredPokemon.Nickname != null && Model.DesiredPokemon.Nickname != "") ? Model.DesiredPokemon.Nickname : Model.DesiredPokemon.Pokemon.Name;
+    string offeredNickname = (Model.OfferedPokemon.Nickname != null && Model.OfferedPokemon.Nickname != "") ? Model.OfferedPokemon.Nickname : Model.OfferedPokemon.Pokemon.Name;
+    string tradeCaught = "";
+    if (Model.isDesiredOwned == true)
+    {
+        tradeCaught = "dex-caught";
+    }
+}
+
+<div class="global-header">
+    <h1>Trade your @offeredNickname for @desiredNickname?</h1>
+</div>
+
+<div class="collection-container">
+    <div class="profile-card @tradeCaught">
+        @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
+        <img class="sprite-img" src=@Model.DesiredPokemon.Pokemon.RBSpriteURL />
+
+        <div class="profile-card-info">
+            @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+
+            <h4 class="dex-details-red-text row">
+                @desiredNickname
+            </h4>
+
+            @*Shows the Pokemon's level and CP properties*@
+            <div class="dex-details-red-text row">Level @Model.DesiredPokemon.Level</div>
+
+            <div class="dex-details-red-text row">
+                @Model.DesiredPokemon.Gender.Name, @Model.DesiredPokemon.CP CP
+            </div>
+            <div class="row">
+                <a class="dex-details-black-text" asp-controller="Users" asp-action="Profile" asp-route-id=@Model.DesiredPokemon.User.UserName>Owned by @Model.DesiredPokemon.User.UserName</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-card dex-caught">
+        @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
+        <img class="sprite-img" src=@Model.OfferedPokemon.Pokemon.RBSpriteURL />
+
+        <div class="profile-card-info">
+            @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+
+            <h4 class="dex-details-red-text row">
+                @offeredNickname
+            </h4>
+
+            @*Shows the Pokemon's level and CP properties*@
+            <div class="dex-details-red-text row">Level @Model.OfferedPokemon.Level</div>
+
+            <div class="dex-details-red-text row">
+                @Model.OfferedPokemon.Gender.Name, @Model.OfferedPokemon.CP CP
+            </div>
+            <div class="row">
+                <a class="dex-details-black-text" asp-controller="Users" asp-action="Profile" asp-route-id=@Model.OfferedPokemon.User.UserName>Owned by @Model.OfferedPokemon.User.UserName</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="caught-create-info-card col-md-4">
+        <form asp-action="FinalizeRequest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DesiredPokemonId" value=@Model.DesiredPokemonId />
+            <input type="hidden" asp-for="OfferedPokemonId" value=@Model.OfferedPokemonId />
+            <input type="hidden" asp-for="isDesiredOwned" value=@Model.isDesiredOwned />
+
+            <div class="form-group">
+                <label asp-for="Comment" class="control-label">Add Message to Request</label>
+                <textarea asp-for="Comment" class="form-control" rows="4" placeholder="Insert a message for the other user">
+                    
+                </textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn global-btn" />
+            </div>
+        </form>
+    </div>
+</div>

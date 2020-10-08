@@ -8,6 +8,10 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200924184932_DatabaseCreation.cs" />
     <Compile Remove="Data\Migrations\20200924184932_DatabaseCreation.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201008183940_CreateTradeRequest.cs" />
+    <Compile Remove="Data\Migrations\20201008183940_CreateTradeRequest.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201008191044_TestTradeRequest.cs" />
+    <Compile Remove="Data\Migrations\20201008191044_TestTradeRequest.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

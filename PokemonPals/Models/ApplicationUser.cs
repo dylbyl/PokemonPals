@@ -15,5 +15,6 @@ namespace PokemonPals.Models
         public Game Game { get; set; }
         public int? AvatarId { get; set; }
         public Avatar Avatar { get; set; }
+        public List<CaughtPokemon> CaughtPokemon { get; set; } = new List<CaughtPokemon>();
     }
 }

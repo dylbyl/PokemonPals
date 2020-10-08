@@ -1,0 +1,130 @@
+﻿@model PokemonPals.Models.ViewModels.TradeRequestViewModel;
+
+@{
+    ViewData["Title"] = $"Trade Requests";
+    string nickname = (Model.DesiredPokemon.Nickname != null && Model.DesiredPokemon.Nickname != "") ? Model.DesiredPokemon.Nickname : Model.DesiredPokemon.Pokemon.Name;
+    string tradeCaught = "";
+    if (Model.isDesiredOwned == true)
+    {
+        tradeCaught = "dex-caught";
+    }
+}
+
+<div class="global-header">
+    <h1>Request @nickname?</h1>
+</div>
+
+<div class="collection-container">
+    <div class="profile-card @tradeCaught">
+        @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
+        <img class="sprite-img" src=@Model.DesiredPokemon.Pokemon.RBSpriteURL />
+
+        <div class="profile-card-info">
+            @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+
+            <h4 class="dex-details-red-text row">
+                @nickname
+            </h4>
+
+            @*Shows the Pokemon's level and CP properties*@
+            <div class="dex-details-red-text row">Level @Model.DesiredPokemon.Level</div>
+
+            <div class="dex-details-red-text row">
+                @Model.DesiredPokemon.Gender.Name, @Model.DesiredPokemon.CP CP
+            </div>
+            <div class="row">
+                <a class="dex-details-black-text" asp-controller="Users" asp-action="Profile" asp-route-id=@Model.DesiredPokemon.User.UserName>Owned by @Model.DesiredPokemon.User.UserName</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="global-header">
+    <h4>Which Pokemon will you offer for @nickname?</h4>
+</div>
+
+<div class="collection-container">
+    @if (Model.TradeOpenPokemon.Count == 0)
+    {
+        <p>You have no Pokemon open to trade. <a asp-controller="Pokemon" asp-action="Dex">Go catch some!</a></p>
+    }
+    else
+    {
+        foreach (CaughtPokemon PokemonInCollection in Model.TradeOpenPokemon)
+        {
+            //A card for displaying a single Pokemon
+<div class="collection-card">
+    @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
+    <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
+
+    <div class="collection-card-info">
+        @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+        @if (PokemonInCollection.Nickname != null)
+        {
+            <h4 class="dex-details-red-text row">
+                @PokemonInCollection.Nickname
+            </h4>
+        }
+        else
+        {
+            <h4 class="dex-details-red-text row">
+                @PokemonInCollection.Pokemon.Name
+            </h4>
+        }
+
+        @*Shows the Pokemon's level and CP properties*@
+        <div class="dex-details-red-text row">Level @PokemonInCollection.Level</div>
+
+        <div class="dex-details-red-text row">
+            @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
+        </div>
+
+        @*Displays if the Pokemon is the one of the user's Favorites, or eligible for a Trade*@
+        <div class="row">
+            @{
+                string favoriteOrTradeString = "";
+
+                if (PokemonInCollection.isFavorite == true)
+                {
+                    favoriteOrTradeString += "Favorite";
+                }
+                if (PokemonInCollection.isFavorite == true && PokemonInCollection.isTradeOpen == true)
+                {
+                    favoriteOrTradeString += ", ";
+                }
+                if (PokemonInCollection.isTradeOpen == true)
+                {
+                    favoriteOrTradeString += "Open to Trade";
+                }
+                @favoriteOrTradeString
+            }
+        </div>
+
+        @*Displays the date the Pokemon was caught*@
+        <div class="row">
+            Caught on @PokemonInCollection.DateCaught.ToShortDateString()
+        </div>
+
+        @*Displays a short user-attached comment, if one exists*@
+    <div class="dex-details-white-text row comment">
+        @{
+            if (PokemonInCollection.Comment != null)
+            {
+                @PokemonInCollection.Comment
+            }
+        }
+    </div>
+        </div>
+    <form class="trade-btn-align" asp-action="StartRequest">
+        <input type="hidden" asp-for="DesiredPokemonId" value=@Model.DesiredPokemon.Id />
+        <input type="hidden" asp-for="OfferedPokemonId" value=@PokemonInCollection.Id />
+        <input type="hidden" asp-for="isDesiredOwned" value=@Model.isDesiredOwned />
+
+        <input type="submit" value="Offer" class="btn trade-btn" />
+    </form>
+</div>
+        }
+    }
+</div>

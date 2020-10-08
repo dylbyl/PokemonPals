@@ -77,6 +77,7 @@ namespace PokemonPals.Controllers
             //Gets a list of all the Pokemon the current user has caught (and have not been soft-deleted)
             List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
                                                             .Where(cp => cp.UserId == currentUser.Id)
+                                                            .Where(cp => cp.isOwned == true)
                                                             .Where(cp => cp.isHidden == false)
                                                             .ToListAsync();
 
@@ -121,7 +122,7 @@ namespace PokemonPals.Controllers
                                             .Where(cp => cp.User.UserName == id)
                                             .Where(cp => cp.isFavorite == true)
                                             .OrderBy(cp => cp.PokemonId)
-                                            .Take(5)
+                                            .Take(6)
                                             .ToListAsync();
 
             model.TradePokemon = await _context.CaughtPokemon
@@ -133,7 +134,7 @@ namespace PokemonPals.Controllers
                                             .Where(cp => cp.User.UserName == id)
                                             .Where(cp => cp.isTradeOpen == true)
                                             .OrderBy(cp => cp.PokemonId)
-                                            .Take(5)
+                                            .Take(6)
                                             .ToListAsync();
 
             return View(model);
@@ -151,6 +152,11 @@ namespace PokemonPals.Controllers
                 return NotFound();
             }
 
+            if(currentUser.UserName == id)
+            {
+                model.isOwnProfile = true;
+            }
+
             model.ViewedCollection = await _context.CaughtPokemon
                                                     .Include(cp => cp.User)
                                                     .Include(cp => cp.Gender)
@@ -165,6 +171,7 @@ namespace PokemonPals.Controllers
             //Gets a list of all the Pokemon the current user has caught (and have not been soft-deleted)
             List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
                                                             .Where(cp => cp.UserId == currentUser.Id)
+                                                            .Where(cp => cp.isOwned == true)
                                                             .Where(cp => cp.isHidden == false)
                                                             .ToListAsync();
 
@@ -208,6 +215,7 @@ namespace PokemonPals.Controllers
             //Gets a list of all the Pokemon the current user has caught (and have not been soft-deleted)
             List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
                                                             .Where(cp => cp.UserId == currentUser.Id)
+                                                            .Where(cp => cp.isOwned == true)
                                                             .Where(cp => cp.isHidden == false)
                                                             .ToListAsync();
 

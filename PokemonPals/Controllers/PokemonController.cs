@@ -77,6 +77,7 @@ namespace PokemonPals.Controllers
             //Gets a list of all the Pokemon the current user has caught (and have not been soft-deleted)
             List<CaughtPokemon> listOfUserCaughtPokemon = await _context.CaughtPokemon
                                                             .Where(cp => cp.UserId == currentUser.Id)
+                                                            .Where(cp => cp.isOwned == true)
                                                             .Where(cp => cp.isHidden == false)
                                                             .ToListAsync();
 

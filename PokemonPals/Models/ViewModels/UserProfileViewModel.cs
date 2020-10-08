@@ -7,13 +7,13 @@ namespace PokemonPals.Models.ViewModels
 {
     public class UserProfileViewModel
     {
-        public ApplicationUser ViewedUser = new ApplicationUser();
-        public Boolean isOwnProfile = false;
-        public List<CaughtPokemon> UserCollection = new List<CaughtPokemon>();
-        public int AllPokemonCount = 0;
-        public List<int> CaughtPokemonIDs = new List<int>();
-        public List<int> CurrentUserCollection = new List<int>();
-        public List<CaughtPokemon> FavoritePokemon = new List<CaughtPokemon>();
-        public List<CaughtPokemon> TradePokemon = new List<CaughtPokemon>();
+        public ApplicationUser ViewedUser { get; set; } = new ApplicationUser();
+        public Boolean isOwnProfile { get; set; } = false;
+        public List<CaughtPokemon> UserCollection { get; set; } = new List<CaughtPokemon>();
+        public int AllPokemonCount { get; set; } = 0;
+        public List<int> CaughtPokemonIDs { get; set; } = new List<int>();
+        public List<int> CurrentUserCollection { get; set; } = new List<int>();
+        public List<CaughtPokemon> FavoritePokemon { get; set; } = new List<CaughtPokemon>();
+        public List<CaughtPokemon> TradePokemon { get; set; } = new List<CaughtPokemon>();
     }
 }
