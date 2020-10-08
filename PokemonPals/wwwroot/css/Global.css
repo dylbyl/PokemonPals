@@ -68,6 +68,21 @@
     color: white;
 }
 
+.trade-btn {
+    background-color: #e0332a;
+    color: #ffe8e7;
+    display: block;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+    .trade-btn:hover {
+        background-color: white;
+        color: black;
+    }
+
 .global-header {
     color: #e0332a;
     text-align: center;

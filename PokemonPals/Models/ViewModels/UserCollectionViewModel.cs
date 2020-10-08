@@ -7,8 +7,9 @@ namespace PokemonPals.Models.ViewModels
 {
     public class UserCollectionViewModel
     {
-        public ApplicationUser ViewedUser = new ApplicationUser();
-        public List<CaughtPokemon> ViewedCollection = new List<CaughtPokemon>();
-        public List<int> CurrentUserCollection = new List<int>();
+        public ApplicationUser ViewedUser { get; set; } = new ApplicationUser();
+        public List<CaughtPokemon> ViewedCollection { get; set; } = new List<CaughtPokemon>();
+        public List<int> CurrentUserCollection { get; set; } = new List<int>();
+        public Boolean isOwnProfile { get; set; } = false;
     }
 }

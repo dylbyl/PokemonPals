@@ -44,11 +44,13 @@
     border-radius: 8px;
     background-color: #ffe8e7;
     padding: 1em;
-    flex-basis: 18%;
+    flex-basis: 25%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     margin: 1em;
     margin-left: 5px;
     margin-right: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
 .profile-text{
@@ -62,6 +64,10 @@
 
 .profile-card-info > .row {
     margin: 0;
+}
+
+.profile-card-info{
+    flex: 1;
 }
 
 .profile-header {
@@ -95,6 +101,8 @@
     margin: 1em;
     margin-left: 6px;
     margin-right: 6px;
+    display: flex;
+    flex-direction: column;
 }
 
     .profile-card-expand:hover {

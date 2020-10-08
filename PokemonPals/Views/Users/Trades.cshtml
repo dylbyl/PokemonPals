@@ -13,9 +13,9 @@
 @{
     if (Model.ViewedCollection.Count() == 0)
     {
-    <div class="profile-center">
-        This user does not have any Pokemon up for trade!
-    </div>
+        <div class="profile-center">
+            This user does not have any Pokemon up for trade!
+        </div>
     }
     else
     {
@@ -29,33 +29,46 @@
                 }
 
                 //A card for displaying a single Pokemon
-                <div class="profile-card-expand @tradeCaught">
-                    @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
+            <div class="profile-card-expand @tradeCaught">
+                @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
+                <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@PokemonInCollection.Id>
                     <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
+                </a>
 
-                    <div class="collection-card-info">
-                        @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
-                        @if (PokemonInCollection.Nickname != null)
-                        {
-                            <h4 class="dex-details-red-text row">
+                <div class="profile-card-info">
+                    @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+                    @if (PokemonInCollection.Nickname != null)
+                    {
+                        <h4 class="dex-details-red-text row">
+                            <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@PokemonInCollection.Id>
                                 @PokemonInCollection.Nickname
-                            </h4>
-                        }
-                        else
-                        {
-                            <h4 class="dex-details-red-text row">
+                            </a>
+                        </h4>
+                    }
+                    else
+                    {
+                        <h4 class="dex-details-red-text row">
+                            <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@PokemonInCollection.Id>
                                 @PokemonInCollection.Pokemon.Name
-                            </h4>
-                        }
+                            </a>
+                        </h4>
+                    }
 
-                        @*Shows the Pokemon's level and CP properties*@
-                        <div class="dex-details-red-text row">Level @PokemonInCollection.Level</div>
+                    @*Shows the Pokemon's level and CP properties*@
+                    <div class="dex-details-red-text row">Level @PokemonInCollection.Level</div>
 
-                        <div class="dex-details-red-text row">
-                            @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
-                        </div>
+                    <div class="dex-details-red-text row">
+                        @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
                     </div>
                 </div>
+
+                @if (!Model.isOwnProfile)
+                {
+                    <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@PokemonInCollection.Id>
+                        <button class="btn trade-btn">Request Trade</button>
+                    </a>
+                }
+            </div>
             }
         </div>
     }

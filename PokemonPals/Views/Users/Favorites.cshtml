@@ -33,28 +33,28 @@
                 @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
                     <img class="sprite-img" src=@PokemonInCollection.Pokemon.RBSpriteURL />
 
-                <div class="collection-card-info">
-                    @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
-                    @if (PokemonInCollection.Nickname != null)
-                    {
-                        <h4 class="dex-details-red-text row">
+                    <div class="collection-card-info">
+                        @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+                        @if (PokemonInCollection.Nickname != null)
+                        {
+                            <h4 class="dex-details-red-text row">
                                 @PokemonInCollection.Nickname
-                        </h4>
-                    }
-                    else
-                    {
-                        <h4 class="dex-details-red-text row">
+                            </h4>
+                        }
+                        else
+                        {
+                            <h4 class="dex-details-red-text row">
                                 @PokemonInCollection.Pokemon.Name
-                        </h4>
-                    }
+                            </h4>
+                        }
 
-                    @*Shows the Pokemon's level and CP properties*@
-                    <div class="dex-details-red-text row">Level @PokemonInCollection.Level</div>
+                        @*Shows the Pokemon's level and CP properties*@
+                        <div class="dex-details-red-text row">Level @PokemonInCollection.Level</div>
 
-                    <div class="dex-details-red-text row">
-                        @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
+                        <div class="dex-details-red-text row">
+                            @PokemonInCollection.Gender.Name, @PokemonInCollection.CP CP
+                        </div>
                     </div>
-                </div>
             </div>
             }
         </div>

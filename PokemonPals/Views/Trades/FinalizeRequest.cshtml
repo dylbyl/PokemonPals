@@ -1,0 +1,41 @@
+﻿@model PokemonPals.Models.ViewModels.TradeRequestViewModel;
+
+@{
+    ViewData["Title"] = $"Trade Requests";
+    string desiredNickname = (Model.DesiredPokemon.Nickname != null && Model.DesiredPokemon.Nickname != "") ? Model.DesiredPokemon.Nickname : Model.DesiredPokemon.Pokemon.Name;
+    string desiredNickname = (Model.DesiredPokemon.Nickname != null && Model.DesiredPokemon.Nickname != "") ? Model.DesiredPokemon.Nickname : Model.DesiredPokemon.Pokemon.Name;
+    string tradeCaught = "";
+    if (Model.isDesiredOwned == true)
+    {
+        tradeCaught = "dex-caught";
+    }
+}
+
+<div class="global-header">
+    <h1>Request @nickname?</h1>
+</div>
+
+<div class="collection-container">
+    <div class="profile-card @tradeCaught">
+        @*The sprite image of the Pokemon. When clicked, it takes the user to an Edit page for this Pokemon*@
+        <img class="sprite-img" src=@Model.DesiredPokemon.Pokemon.RBSpriteURL />
+
+        <div class="profile-card-info">
+            @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+
+            <h4 class="dex-details-red-text row">
+                @nickname
+            </h4>
+
+            @*Shows the Pokemon's level and CP properties*@
+            <div class="dex-details-red-text row">Level @Model.DesiredPokemon.Level</div>
+
+            <div class="dex-details-red-text row">
+                @Model.DesiredPokemon.Gender.Name, @Model.DesiredPokemon.CP CP
+            </div>
+            <div class="row">
+                <a class="dex-details-black-text" asp-controller="Users" asp-action="Profile" asp-route-id=@Model.DesiredPokemon.User.UserName>Owned by @Model.DesiredPokemon.User.UserName</a>
+            </div>
+        </div>
+    </div>
+</div>

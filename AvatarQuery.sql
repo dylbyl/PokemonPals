@@ -29,3 +29,6 @@ INSERT INTO Avatar (Name, ImageURL) VALUES ('Popplio', 'https://assets.pokemon.c
 INSERT INTO Avatar (Name, ImageURL) VALUES ('Grookey', 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/810.png')
 INSERT INTO Avatar (Name, ImageURL) VALUES ('Scorbunny', 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/813.png')
 INSERT INTO Avatar (Name, ImageURL) VALUES ('Sobble', 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/816.png')
+
+INSERT INTO Avatar (Name, ImageURL) VALUES ('Pikachu', 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png')
+INSERT INTO Avatar (Name, ImageURL) VALUES ('Eevee', 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/133.png')
