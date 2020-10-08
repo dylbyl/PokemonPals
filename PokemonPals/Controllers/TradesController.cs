@@ -140,7 +140,7 @@ namespace PokemonPals.Controllers
                 isDesiredOwned = model.isDesiredOwned
             };
 
-            return View("FinalizeRequest", passedModel);
+            return RedirectToAction("FinalizeRequest", passedModel);
         }
 
         public async Task<IActionResult> FinalizeRequest(FinalTradeRequestViewModel passedModel)
@@ -191,16 +191,69 @@ namespace PokemonPals.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult FinalizeRequest(TradeRequestViewModel model)
+        public async Task<IActionResult> FinalizeRequest(TradeRequestViewModel passedModel)
         {
-            TradeRquest newTradeRequest = new TradeRquest()
+            ModelState.Remove("DesiredPokemon");
+            ModelState.Remove("DesiredPokemon.Level");
+            ModelState.Remove("OfferedPokemon");
+            ModelState.Remove("TradeOpenPokemon");
+
+            if (ModelState.IsValid)
             {
-                DesiredPokemonId = model.DesiredPokemonId,
-                OfferedPokemonId = model.DesiredPokemonId,
-                Comment = model.Comment
+                TradeRequest newTradeRequest = new TradeRequest();
+
+                newTradeRequest.DesiredPokemonId = passedModel.DesiredPokemonId;
+                newTradeRequest.OfferedPokemonId = passedModel.OfferedPokemonId;
+                newTradeRequest.Comment = passedModel.Comment;
+
+                _context.Database.ExecuteSqlCommand(
+        $"INSERT INTO TradeRequest (DesiredPokemonId, OfferedPokemonId, Comment) VALUES ({passedModel.DesiredPokemonId}, {passedModel.OfferedPokemonId}, {passedModel.Comment})");
+
+                return RedirectToAction("Index");
+            }
+
+            TradeRequestViewModel failedModel = new TradeRequestViewModel()
+            {
+                DesiredPokemonId = passedModel.DesiredPokemonId,
+                OfferedPokemonId = passedModel.OfferedPokemonId,
+                isDesiredOwned = passedModel.isDesiredOwned
             };
 
-            return View("Index");
+            ApplicationUser currentUser = await GetCurrentUserAsync();
+
+
+
+            failedModel.DesiredPokemon = await _context.CaughtPokemon
+                                            .Include(cp => cp.Pokemon)
+                                            .Include(cp => cp.Gender)
+                                            .Include(cp => cp.User)
+                                            .Where(cp => cp.User.Id != currentUser.Id)
+                                            .Where(cp => cp.isOwned == true)
+                                            .Where(cp => cp.isHidden == false)
+                                            .Where(cp => cp.isTradeOpen == true)
+                                            .FirstOrDefaultAsync(cp => cp.Id == passedModel.DesiredPokemonId);
+
+            if (failedModel.DesiredPokemon == null)
+            {
+                return NotFound();
+            }
+
+            failedModel.OfferedPokemon = await _context.CaughtPokemon
+                                            .Include(cp => cp.Pokemon)
+                                            .Include(cp => cp.Gender)
+                                            .Include(cp => cp.User)
+                                            .Where(cp => cp.User.Id == currentUser.Id)
+                                            .Where(cp => cp.isOwned == true)
+                                            .Where(cp => cp.isHidden == false)
+                                            .Where(cp => cp.isTradeOpen == true)
+                                            .FirstOrDefaultAsync(cp => cp.Id == passedModel.OfferedPokemonId);
+
+            if (failedModel.OfferedPokemon == null)
+            {
+                return NotFound();
+            }
+
+            return View(failedModel);
         }
     }
 }

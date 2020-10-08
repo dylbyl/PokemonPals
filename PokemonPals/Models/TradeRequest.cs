@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PokemonPals.Models
 {
-    public class TradeRquest
+    public class TradeRequest
     {
         [Required]
         public int Id { get; set; }
