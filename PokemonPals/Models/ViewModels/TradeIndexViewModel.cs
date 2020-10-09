@@ -9,5 +9,7 @@ namespace PokemonPals.Models.ViewModels
     {
         public List<CaughtPokemon> SearchResults { get; set; } = new List<CaughtPokemon>();
         public List<int> CurrentUserCollection { get; set; } = new List<int>();
+        public List<TradeRequest> IncomingRequests { get; set; } = new List<TradeRequest>();
+        public List<TradeRequest> OutgoingRequests { get; set; } = new List<TradeRequest>();
     }
 }
