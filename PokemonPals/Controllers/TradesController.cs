@@ -34,6 +34,40 @@ namespace PokemonPals.Controllers
 
             ViewBag.SearchString = searchString;
 
+            model.IncomingRequests = await _context.TradeRequest
+                                            .Include(tr => tr.DesiredPokemon)
+                                                .ThenInclude(tr => tr.User)
+                                            .Include(tr => tr.DesiredPokemon)
+                                                .ThenInclude(tr => tr.Gender)
+                                            .Include(tr => tr.DesiredPokemon)
+                                                .ThenInclude(tr => tr.Pokemon)
+                                            .Include(tr => tr.OfferedPokemon)
+                                                .ThenInclude(tr => tr.User)
+                                            .Include(tr => tr.OfferedPokemon)
+                                                .ThenInclude(tr => tr.Gender)
+                                            .Include(tr => tr.OfferedPokemon)
+                                                .ThenInclude(tr => tr.Pokemon)
+                                            .Take(3)
+                                            .Where(tr => tr.DesiredPokemon.UserId == currentUser.Id)
+                                            .ToListAsync();
+
+            model.OutgoingRequests = await _context.TradeRequest
+                                            .Include(tr => tr.DesiredPokemon)
+                                                .ThenInclude(tr => tr.User)
+                                            .Include(tr => tr.DesiredPokemon)
+                                                .ThenInclude(tr => tr.Gender)
+                                            .Include(tr => tr.DesiredPokemon)
+                                                .ThenInclude(tr => tr.Pokemon)
+                                            .Include(tr => tr.OfferedPokemon)
+                                                .ThenInclude(tr => tr.User)
+                                            .Include(tr => tr.OfferedPokemon)
+                                                .ThenInclude(tr => tr.Gender)
+                                            .Include(tr => tr.OfferedPokemon)
+                                                .ThenInclude(tr => tr.Pokemon)
+                                            .Take(3)
+                                            .Where(tr => tr.OfferedPokemon.UserId == currentUser.Id)
+                                            .ToListAsync();
+
             model.SearchResults = await _context.CaughtPokemon
                                             .Include(cp => cp.User)
                                             .Include(cp => cp.Pokemon)

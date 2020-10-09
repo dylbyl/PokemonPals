@@ -22,20 +22,5 @@ namespace PokemonPals.Data
         public DbSet<Gender> Gender { get; set; }
         public DbSet<Pokemon> Pokemon { get; set; }
         public DbSet<TradeRequest> TradeRequest { get; set; }
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
-
-        //    modelBuilder.Entity<CaughtPokemon>()
-        //        .HasMany(cp => cp.TradeRequests)
-        //        .WithOne(tr => tr.DesiredPokemon)
-        //        .OnDelete(DeleteBehavior.Restrict);
-
-        //    modelBuilder.Entity<CaughtPokemon>()
-        //        .HasMany(cp => cp.TradeRequests)
-        //        .WithOne(tr => tr.OfferedPokemon)
-        //        .OnDelete(DeleteBehavior.Restrict);
-        //}
     }
 }
