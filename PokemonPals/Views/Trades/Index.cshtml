@@ -32,9 +32,33 @@
                             <img class="sprite-img" src=@SingleIncomingRequest.OfferedPokemon.Pokemon.RBSpriteURL />
                         </div>
                         <div class="dex-details-red-text">Trade your @desiredNickname for @offeredNickname</div>
-                        <div>
-                            <a class="dex-details-black-text" asp-controller="Users" asp-action="profile" asp-route-id=@SingleIncomingRequest.OfferedPokemon.User.UserName>Sent by @SingleIncomingRequest.OfferedPokemon.User.UserName</a>
+                        <div class="dex-details-black-text">
+                            Sent by <a class="dex-details-black-text" asp-controller="Users" asp-action="profile" asp-route-id=@SingleIncomingRequest.OfferedPokemon.User.UserName>@SingleIncomingRequest.OfferedPokemon.User.UserName</a> on @SingleIncomingRequest.DateSent.ToShortDateString()
                         </div>
+                        <div class="dex-details-red-text">
+                            @SingleIncomingRequest.Comment
+                        </div>
+                        @{
+                            if (SingleIncomingRequest.isOpen)
+                            {
+                                <div class="dex-details-black-text">
+                                    Open
+                                </div>
+                            }
+                            else if (!SingleIncomingRequest.isOpen && SingleIncomingRequest.DateCompleted == null)
+                            {
+                                <div class="dex-details-black-text">
+                                    Rejected
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="dex-details-black-text">
+                                    Completed
+                                </div>
+                            }
+
+                        }
                     </div>
                 }
             }
@@ -60,9 +84,33 @@
                             <img class="sprite-img" src=@SingleOutgoingRequest.DesiredPokemon.Pokemon.RBSpriteURL />
                         </div>
                         <div class="dex-details-red-text">Trade your @offeredNickname for @desiredNickname</div>
-                        <div>
-                            <a class="dex-details-black-text" asp-controller="Users" asp-action="profile" asp-route-id=@SingleOutgoingRequest.DesiredPokemon.User.UserName>Sent to @SingleOutgoingRequest.DesiredPokemon.User.UserName</a>
+                        <div class="dex-details-black-text">
+                            Sent to <a class="dex-details-black-text" asp-controller="Users" asp-action="profile" asp-route-id=@SingleOutgoingRequest.DesiredPokemon.User.UserName>@SingleOutgoingRequest.DesiredPokemon.User.UserName</a> on @SingleOutgoingRequest.DateSent.ToShortDateString()
                         </div>
+                        <div class="dex-details-red-text">
+                            @SingleOutgoingRequest.Comment
+                        </div>
+                        @{
+                            if (SingleOutgoingRequest.isOpen)
+                            {
+                                <div class="dex-details-black-text">
+                                    Open
+                                </div>
+                            }
+                            else if (!SingleOutgoingRequest.isOpen && SingleOutgoingRequest.DateCompleted == null)
+                            {
+                                <div class="dex-details-black-text">
+                                    Rejected
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="dex-details-black-text">
+                                    Completed
+                                </div>
+                            }
+
+                        }
                     </div>
                 }
             }

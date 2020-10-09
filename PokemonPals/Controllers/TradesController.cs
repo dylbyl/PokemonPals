@@ -49,6 +49,7 @@ namespace PokemonPals.Controllers
                                                 .ThenInclude(tr => tr.Pokemon)
                                             .Take(3)
                                             .Where(tr => tr.DesiredPokemon.UserId == currentUser.Id)
+                                            .OrderByDescending(tr => tr.DateSent)
                                             .ToListAsync();
 
             model.OutgoingRequests = await _context.TradeRequest
@@ -66,6 +67,7 @@ namespace PokemonPals.Controllers
                                                 .ThenInclude(tr => tr.Pokemon)
                                             .Take(3)
                                             .Where(tr => tr.OfferedPokemon.UserId == currentUser.Id)
+                                            .OrderByDescending(tr => tr.DateSent)
                                             .ToListAsync();
 
             model.SearchResults = await _context.CaughtPokemon
@@ -238,10 +240,11 @@ namespace PokemonPals.Controllers
 
                 newTradeRequest.DesiredPokemonId = passedModel.DesiredPokemonId;
                 newTradeRequest.OfferedPokemonId = passedModel.OfferedPokemonId;
-                newTradeRequest.Comment = passedModel.Comment;
+                newTradeRequest.Comment = passedModel.Comment.Replace("'", "''");
+                newTradeRequest.isOpen = true;
 
-                _context.Database.ExecuteSqlCommand(
-        $"INSERT INTO TradeRequest (DesiredPokemonId, OfferedPokemonId, Comment) VALUES ({passedModel.DesiredPokemonId}, {passedModel.OfferedPokemonId}, {passedModel.Comment})");
+                string sqlCommand = $"INSERT INTO TradeRequest (DesiredPokemonId, OfferedPokemonId, Comment, isOpen, DateSent, DateCompleted) VALUES ({newTradeRequest.DesiredPokemonId}, {newTradeRequest.OfferedPokemonId}, '{newTradeRequest.Comment}', 1, '{DateTime.Now}', NULL)";
+                _context.Database.ExecuteSqlCommand(sqlCommand);
 
                 return RedirectToAction("Index");
             }

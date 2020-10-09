@@ -19,7 +19,7 @@ namespace PokemonPals.Models
         [StringLength(120)]
         public string Comment { get; set; }
         public DateTime DateSent { get; set; }
-        public DateTime DateCompleted { get; set; }
+        public DateTime? DateCompleted { get; set; }
         public Boolean isOpen { get; set; }
     }
 }
