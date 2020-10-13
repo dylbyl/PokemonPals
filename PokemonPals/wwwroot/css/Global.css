@@ -120,3 +120,11 @@ a {
     margin-left: 100px;
     margin-top: 30px;
 }
+
+.home-container{
+    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}

@@ -47,7 +47,7 @@ namespace PokemonPals.Controllers
                                                 .ThenInclude(tr => tr.Gender)
                                             .Include(tr => tr.OfferedPokemon)
                                                 .ThenInclude(tr => tr.Pokemon)
-                                            .Take(3)
+                                            //.Take(3)
                                             .Where(tr => tr.DesiredPokemon.UserId == currentUser.Id)
                                             .OrderByDescending(tr => tr.DateSent)
                                             .ToListAsync();
@@ -65,7 +65,7 @@ namespace PokemonPals.Controllers
                                                 .ThenInclude(tr => tr.Gender)
                                             .Include(tr => tr.OfferedPokemon)
                                                 .ThenInclude(tr => tr.Pokemon)
-                                            .Take(3)
+                                            //.Take(3)
                                             .Where(tr => tr.OfferedPokemon.UserId == currentUser.Id)
                                             .OrderByDescending(tr => tr.DateSent)
                                             .ToListAsync();
@@ -243,9 +243,17 @@ namespace PokemonPals.Controllers
                 newTradeRequest.Comment = passedModel.Comment.Replace("'", "''");
                 newTradeRequest.isOpen = true;
 
-                string sqlCommand = $"INSERT INTO TradeRequest (DesiredPokemonId, OfferedPokemonId, Comment, isOpen, DateSent, DateCompleted) VALUES ({newTradeRequest.DesiredPokemonId}, {newTradeRequest.OfferedPokemonId}, '{newTradeRequest.Comment}', 1, '{DateTime.Now}', NULL)";
-                _context.Database.ExecuteSqlCommand(sqlCommand);
+                TradeRequest potentialDuplicateRequest = await _context.TradeRequest
+                                                            .Where(tr => (tr.DesiredPokemonId == newTradeRequest.DesiredPokemonId && tr.OfferedPokemonId == newTradeRequest.OfferedPokemonId) || (tr.DesiredPokemonId == newTradeRequest.OfferedPokemonId && tr.OfferedPokemonId == newTradeRequest.DesiredPokemonId))
+                                                            .Where(tr => tr.isOpen == true)
+                                                            .FirstOrDefaultAsync();
 
+                if (potentialDuplicateRequest == null)
+                {
+                    string sqlCommand = $"INSERT INTO TradeRequest (DesiredPokemonId, OfferedPokemonId, Comment, isOpen, DateSent, DateCompleted) VALUES ({newTradeRequest.DesiredPokemonId}, {newTradeRequest.OfferedPokemonId}, '{newTradeRequest.Comment}', 1, '{DateTime.Now}', NULL)";
+                    await _context.Database.ExecuteSqlCommandAsync(sqlCommand);
+                }
+                
                 return RedirectToAction("Index");
             }
 
