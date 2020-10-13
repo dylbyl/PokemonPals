@@ -2,6 +2,7 @@
 
 **Pokemon Pals** is a lot like [other Pokedex Tracker sites](https://pokedextracker.com/): users can create an account and keep track of the virtual monsters they’ve acquired in Pokemon Let’s Go, a video game for the Nintendo Switch. It serves as a companion app where you can record members of your collection manually, selecting the Pokemon’s species and inputting their nickname, level, and various other details. The Pokemon is then marked as “captured” and added to your collection. Pokemon marked as "Favorites" or "Open to Trade" can be shown on your Profile to other users. You can then send Trade Requests to other users, which can be carried out in-game.
 
+# Using the App
 ## Dex
 ![Dex view](https://github.com/dylbyl/PokemonPals/blob/master/images/Dex.png?raw=true)
 On the Dex page, you'll be shown all of the original 151 Pokemon, in ascending order based on their Pokedex number. You can change the sort order of this view by clicking "Number" or "Name" at the top of the page. You can also search for a Pokemon by typing in its species name and clicking "Search". Once you've found the Pokemon you'd like to add to your collection, click the Pokeball icon on its card. You'll be able to give it a nickname, record it's level and CP, give it a comment, or mark it as a favorite/Open to Trade.
