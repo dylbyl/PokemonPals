@@ -1,6 +1,6 @@
 # PokemonPals
 
-**Pokemon Pals** is a lot like [other Pokedex Tracker sites](https://pokedextracker.com/): users can create an account and keep track of the virtual monsters they’ve acquired in Pokemon Let’s Go, a video game for the Nintendo Switch. It serves as a companion app where you can record members of your collection manually, selecting the Pokemon’s species and inputting their nickname, level, and various other details. The Pokemon is then marked as “captured” and added to your collection.
+**Pokemon Pals** is a lot like [other Pokedex Tracker sites](https://pokedextracker.com/): users can create an account and keep track of the virtual monsters they’ve acquired in Pokemon Let’s Go, a video game for the Nintendo Switch. It serves as a companion app where you can record members of your collection manually, selecting the Pokemon’s species and inputting their nickname, level, and various other details. The Pokemon is then marked as “captured” and added to your collection. Pokemon marked as "Favorites" or "Open to Trade" can be shown on your Profile to other users. You can then send Trade Requests to other users, which can be carried out in-game.
 
 ## Dex
 ![Dex view](https://github.com/dylbyl/PokemonPals/blob/master/images/Dex.png?raw=true)
