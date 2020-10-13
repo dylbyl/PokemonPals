@@ -55,7 +55,7 @@ namespace PokemonPals.Controllers
                 //Checks the caught Pokemon's nickname, species name, and both types for the search string. This is a case insensitive search. Two of the properties (Nickname and Type 2) are nullable, and therfore require a null-conditional operator (ie cp.Nickname ?? ""). In this expression, if the property is NOT null, the property is used. If the property is null, and empty string is used instead.
                 FullUserCollection = FullUserCollection.Where(
                     cp => (cp.Nickname ?? "").Contains(searchString, StringComparison.OrdinalIgnoreCase)
-                                       || cp.Pokemon.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) || cp.Pokemon.Type1.Equals(searchString, StringComparison.OrdinalIgnoreCase) || (cp.Pokemon.Type2 ?? "").Equals(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+                                       || (cp.Comment ?? "").Contains(searchString, StringComparison.OrdinalIgnoreCase) || cp.Pokemon.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) || cp.Pokemon.Type1.Equals(searchString, StringComparison.OrdinalIgnoreCase) || (cp.Pokemon.Type2 ?? "").Equals(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
             //These lines check to see if a parameter was passed to this method to determine if the collection is sorted. If so, the data stored in the ViewBag is switched to the inverse sortOrder string, so that when the user clicks the sort link a second time, the sort order will be reversed.
@@ -133,6 +133,11 @@ namespace PokemonPals.Controllers
             model.SelectedPokemon = await _context.Pokemon
                                     .Where(p => p.Id == id)
                                     .FirstOrDefaultAsync();
+
+            if(model.SelectedPokemon == null)
+            {
+                return NotFound();
+            }
 
             //A blank CaughtPokemon resource was created with our ViewModel. This resource needs a PokemonId so that it can be properly created when the user clicks Submit
             model.PokemonToAdd.PokemonId = id;

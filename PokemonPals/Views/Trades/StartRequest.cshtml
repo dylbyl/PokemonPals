@@ -1,13 +1,13 @@
 ﻿@model PokemonPals.Models.ViewModels.TradeRequestViewModel;
 
 @{
-    ViewData["Title"] = $"Trade Requests";
     string nickname = (Model.DesiredPokemon.Nickname != null && Model.DesiredPokemon.Nickname != "") ? Model.DesiredPokemon.Nickname : Model.DesiredPokemon.Pokemon.Name;
     string tradeCaught = "";
     if (Model.isDesiredOwned == true)
     {
         tradeCaught = "dex-caught";
     }
+    ViewData["Title"] = $"Request {nickname}";
 }
 
 <div class="global-header">

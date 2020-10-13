@@ -1,8 +1,70 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">"Welcome to the world of Pokemon!"</h1>
+    
+    <div class="home-container">
+        <hr />
+        <p><b>Pokemon Pals</b> is a lot like <a href="https://pokedextracker.com/">other Pokedex Tracker sites</a>: users can create an account and keep track of the virtual monsters they’ve acquired in Pokemon Let’s Go, a video game for the Nintendo Switch. It serves as a companion app where you can <a asp-area="" asp-controller="Pokemon" asp-action="Dex">record members of your collection manually</a>, selecting the Pokemon’s species and inputting their nickname, level, and various other details. The Pokemon is then marked as “captured” and <a asp-area="" asp-controller="CaughtPokemon" asp-action="Collection">added to your collection.</a></p>
+
+        <h4 class="dex-details-red-text">
+            <a asp-area="" asp-controller="Pokemon" asp-action="Dex">
+                Dex
+            </a>
+        </h4>
+        <p>
+            <a asp-area="" asp-controller="Pokemon" asp-action="Dex">On the Dex page</a>, you'll be shown all of the original 151 Pokemon, in ascending order based on their Pokedex number. You can change the sort order of this view by clicking "Number" or "Name" at the top of the page. You can also search for a Pokemon by typing in its species name and clicking "Search". Once you've found the Pokemon you'd like to add to your collection, click the Pokeball icon on its card. You'll be able to give it a nickname, record it's level and CP, give it a comment, or mark it as a favorite/Open to Trade.
+        </p>
+        <p>
+            Clicking the Pokemon's name or icon brings you to a Details view for that species. Here, you can see that Pokemon's official art, types, and stats. The bottom of the page will display all of the Pokemon you've caught of that species, if you have any.
+        </p>
+
+        <h4 class="dex-details-red-text">
+            <a asp-area="" asp-controller="CaughtPokemon" asp-action="Collection">
+                Collection
+            </a>
+        </h4>
+        <p>
+            <a asp-area="" asp-controller="CaughtPokemon" asp-action="Collection">The Collection page</a> shows every Pokemon you've caught and recorded on Pokemon Pals. You can sort the list based on Pokedex number, name, level, or CP. You can filter the Collection to show only Pokemon you have/haven't nicknamed, set as a favorite, marked Open for Trade, or added a Comment to. You can also search by Pokemon species name, nickname, comment, or type. When searching by type, you must spell the type completely -- it doesn't work with partial matches!
+        </p>
+        <p>
+            Clicking on a Pokemon's name or image here lets you Edit the details for that specific Pokemon. You can change all the info you input when you first caught the Pokemon, but you can also change its species! This is helpful for when a Pokemon evolves in your game, or if you simply chose the wrong species when recording its info. A link at the bottom of the Edit page also allows you to delete the Pokemon from your collection.
+        </p>
+
+        <h4 class="dex-details-red-text">
+            <a asp-area="" asp-controller="Users" asp-action="UserSearch">
+                Profiles
+            </a>
+        </h4>
+        @{ if (SignInManager.IsSignedIn(User))
+            {
+                <p><a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id=@User.Identity.Name>On your profile page</a>, you can show off your favorite Pokemon, rare Pokemon you’d be willing to trade to other players, your Discord username, your Nintendo Switch Friend Code, and <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">some editable personal info</a>. <a asp-area="" asp-controller="Users" asp-action="UserSearch">You can search for a friend</a> to look at their favorites and trade showcase as well.</p>
+            }
+            else
+            {
+                <p>
+                    On your profile page (viewable only when signed in), you can show off your favorite Pokemon, rare Pokemon you’d be willing to trade to other players, your Discord username, your Nintendo Switch Friend Code, and some editable personal info. <a asp-area="" asp-controller="Users" asp-action="UserSearch">You can search for a friend</a> to look at their favorites and trade showcase as well.
+                </p>
+            }
+        }
+
+        <h4 class="dex-details-red-text">
+            <a asp-area="" asp-controller="Trades" asp-action="Index">
+                Trade Requests
+            </a>
+        </h4>
+        <p>
+            When looking at a user's profile, you can click a button to request any Pokemon a user has put up for trade. You'll then be able to offer a Pokemon of your own in exchange, then attach a message. <a asp-area="" asp-controller="Trades" asp-action="Index">You can also search all tradeable Pokemon to find a specific species that you'd like!</a> On the Trade Requests page, you can also view all of your incoming and outgoing trade requests. In the future, you'll be able to comment on, edit, delete, and accept/reject trade requests. As for now, I suggest asking the user to add you on Discord and discussing the details of the trade there!
+        </p>
+        <hr />
+        <p>That's all for the instructions! Have fun with the app, and good luck catching (or trading) 'em all!</p>
+    </div>
+
+    <a asp-controller="CaughtPokemon" asp-action="Create" asp-route-id="27"><img class="pokeball-img" src="@Url.Content("~/images/pokeball.png")" /></a>
 </div>

@@ -149,29 +149,58 @@
 
                             //A card for displaying a single Pokemon
                         <div class="profile-card @tradeCaught">
-                            @*The sprite image of the Pokemon.*@
-                            <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@SingleTrade.Id>
-                                <img class="sprite-img" src=@SingleTrade.Pokemon.RBSpriteURL />
-                            </a>
-
-                            <div class="profile-card-info">
-                                @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
-                                @if (SingleTrade.Nickname != null)
+                            @{ if (Model.isOwnProfile == false)
                                 {
-                                    <h4 class="dex-details-red-text row">
-                                        <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@SingleTrade.Id>
-                                            @SingleTrade.Nickname
-                                        </a>
-                                    </h4>
+                                    @*The sprite image of the Pokemon.*@
+                                    <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@SingleTrade.Id>
+                                        <img class="sprite-img" src=@SingleTrade.Pokemon.RBSpriteURL />
+                                    </a>
                                 }
                                 else
                                 {
-                                    <h4 class="dex-details-red-text row">
-                                        <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@SingleTrade.Id>
-                                            @SingleTrade.Pokemon.Name
-                                        </a>
-                                    </h4>
+                                        <img class="sprite-img" src=@SingleTrade.Pokemon.RBSpriteURL />
                                 }
+                            }
+
+                            <div class="profile-card-info">
+                                @*Shows the Pokemon's Nickname (or their species name, if this caught Pokemon has no nickname)*@
+                                @{
+                                    if (Model.isOwnProfile == false)
+                                    {
+                                        @if (SingleTrade.Nickname != null)
+                                        {
+                                            <h4 class="dex-details-red-text row">
+                                                <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@SingleTrade.Id>
+                                                    @SingleTrade.Nickname
+                                                </a>
+                                            </h4>
+                                        }
+                                        else
+                                        {
+                                            <h4 class="dex-details-red-text row">
+                                                <a asp-controller="Trades" asp-action="StartRequest" asp-route-id=@SingleTrade.Id>
+                                                    @SingleTrade.Pokemon.Name
+                                                </a>
+                                            </h4>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @if (SingleTrade.Nickname != null)
+                                        {
+                                            <h4 class="dex-details-red-text row">
+                                                    @SingleTrade.Nickname
+                                            </h4>
+                                        }
+                                        else
+                                        {
+                                            <h4 class="dex-details-red-text row">
+                                                    @SingleTrade.Pokemon.Name
+                                            </h4>
+                                        }
+                                    }
+                                }
+
 
                                 @*Shows the Pokemon's level and CP properties*@
                                 <div class="dex-details-red-text row">Level @SingleTrade.Level</div>
