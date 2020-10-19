@@ -4,7 +4,11 @@
 
 # Using the App
 
-Go to [he Azure-hosted Pokemon Pals site](https://pokemonpals.azurewebsites.net/) to use the app! You'll want to [Register](https://pokemonpals.azurewebsites.net/Identity/Account/Register) an account before you explore the app further.
+Go to [the Azure-hosted Pokemon Pals site](https://pokemonpals.azurewebsites.net/) to use the app! You'll want to [Register](https://pokemonpals.azurewebsites.net/Identity/Account/Register) an account before you explore the app further. 
+
+If you'd rather peruse an already made account, login with the username **dyl_byl** and the password **Admin1!**
+
+***Important Note***: This app is for demo purposes only. It's not completely fleshed out, and does contain a few bugs. For this reason, please refrain from sending ANY trade requests, even for testing!
 
 ## Dex
 ![Dex view](https://github.com/dylbyl/PokemonPals/blob/master/images/Dex.png?raw=true)
