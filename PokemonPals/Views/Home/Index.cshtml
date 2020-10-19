@@ -42,6 +42,7 @@
                 Profiles
             </a>
         </h4>
+        @*Changes part of the page depending on whether or not the user is logged in. If the user isn't logged in, we can't send them to a profile!*@
         @{ if (SignInManager.IsSignedIn(User))
             {
                 <p><a asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id=@User.Identity.Name>On your profile page</a>, you can show off your favorite Pokemon, rare Pokemon you’d be willing to trade to other players, your Discord username, your Nintendo Switch Friend Code, and <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">some editable personal info</a>. <a asp-area="" asp-controller="Users" asp-action="UserSearch">You can search for a friend</a> to look at their favorites and trade showcase as well.</p>
