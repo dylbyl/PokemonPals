@@ -37,3 +37,19 @@ On your profile page, you can show off your favorite Pokemon, rare Pokemon youâ€
 When looking at a user's profile, you can click a button to request any Pokemon a user has put up for trade. You'll then be able to offer a Pokemon of your own in exchange, then attach a message. You can also search all tradeable Pokemon to find a specific species that you'd like! [On the Trade Requests page](https://pokemonpals.azurewebsites.net/Trades), you can also view all of your incoming and outgoing trade requests. In the future, you'll be able to comment on, edit, delete, and accept/reject trade requests. As for now, I suggest asking the user to add you on Discord and discussing the details of the trade there!
 
 That's all for the instructions! Have fun with the app, and good luck catching (or trading) 'em all!
+
+# Installing the App
+
+***Note***: These instructions are to be used when Azure is down, or after Sept 2021 (when my Azure trial expires)
+
+0. Ensure that you have [SQL Server Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) and [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) installed. Run SQL Server Express to instantiate a SQL Server on your machine, where the database for our project will be stored.
+1. Clone this repo onto a local branch on your machine.
+2. Open `PokemonPals/PokemonPals.sln` in Visual Studio. This should open the entire project.
+3. Open Visual Studio's Package Manager Console.
+4. In the Package Manager Console, run `Add-Migration CreateDatabase` and `UpdateDatabase`. This will create a new instance of the PokemonPals database on your SQL Server.
+5. In Visual Studio, navigate to `PokemonPals/appsettings.json`. Alter the `ConnectionStrings` object so that `SQLEXPRESS01` is instead the name of the SQL Server running on your machine. This gives the project a direct path to the SQL Server, then to the database on that server.
+6. Using Visual Studio's SQL Server Object Explorer, navigate to the newly created PokemonPals database (usually found in Server -> Databases). Right click on it and select *New Query*.
+7. This has opened a blank SQL Query attached to the PokemonPals datbase. So far, we've created the schema for the database, but it holds no data. Copy everything in [EntireSeededDataQuery.sql](https://github.com/dylbyl/PokemonPals/blob/master/EntireSeededDataQuery.sql) into this blank SQL Query and execute it. This will generate seed data for our database.
+8. By this point, we've created a new database for the project on your SQL Server and we've added data to it. Now we just have to start the app!
+9. Press Ctrl + F5 to run the app! If you'd like to run in debugger mode instead, press F5 (or the *Play* button marked *IIS Express* at the top of Visual Studio).
+10. Refer to the app usage instructions and enjoy!
