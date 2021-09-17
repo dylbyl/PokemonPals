@@ -47,4 +47,4 @@ That's all for the instructions! Have fun with the app, and good luck catching (
 8. By this point, we've created a new database for the project on your SQL Server and we've added data to it. Now we just have to start the app!
 9. Press Ctrl + F5 to run the app! If you'd like to run in debugger mode instead, press F5 (or the *Play* button marked *IIS Express* at the top of Visual Studio).
 10. Refer to the app usage instructions and enjoy!
-11. Register an account and explore the app!
+11. Register an account and explore the app! If you prefer to peruse an existing account, try username **dyl_byl** and password **Admin1!**
