@@ -2,14 +2,6 @@
 
 **Pokemon Pals** is a lot like [other Pokedex Tracker sites](https://pokedextracker.com/): users can create an account and keep track of the virtual monsters they’ve acquired in Pokemon Let’s Go, a video game for the Nintendo Switch. It serves as a companion app where you can record members of your collection manually, selecting the Pokemon’s species and inputting their nickname, level, and various other details. The Pokemon is then marked as “captured” and added to your collection. Pokemon marked as "Favorites" or "Open to Trade" can be shown on your Profile to other users. You can then send Trade Requests to other users, which can be carried out in-game.
 
-# Using the App
-
-Go to [the Azure-hosted Pokemon Pals site](https://pokemonpals.azurewebsites.net/) to use the app! You'll want to [Register](https://pokemonpals.azurewebsites.net/Identity/Account/Register) an account before you explore the app further. 
-
-If you'd rather peruse an already made account, login with the username **dyl_byl** and the password **Admin1!**
-
-***Important Note***: This app is for demo purposes only. It's not completely fleshed out, and does contain a few bugs. For this reason, please refrain from sending ANY trade requests, even for testing!
-
 ## Dex
 ![Dex view](https://github.com/dylbyl/PokemonPals/blob/master/images/Dex.png?raw=true)
 [On the Dex page, you'll be shown all of the original 151 Pokemon](https://pokemonpals.azurewebsites.net/Pokemon/Dex), in ascending order based on their Pokedex number. You can change the sort order of this view by clicking "Number" or "Name" at the top of the page. You can also search for a Pokemon by typing in its species name and clicking "Search". Once you've found the Pokemon you'd like to add to your collection, click the Pokeball icon on its card. You'll be able to give it a nickname, record it's level and CP, give it a comment, or mark it as a favorite/Open to Trade.
@@ -40,7 +32,7 @@ That's all for the instructions! Have fun with the app, and good luck catching (
 
 # Installing the App
 
-***Note***: These instructions are to be used when Azure is down, or after Sept 2021 (when my Azure trial expires)
+***Important Note***: This app is for demo purposes only. It's not completely fleshed out, and does contain a few bugs. Most notably, several bugs exist when sending Trade Requests.
 
 0. Ensure that you have [SQL Server Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) and [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) installed. Run SQL Server Express to instantiate a SQL Server on your machine, where the database for our project will be stored.
 1. Clone this repo onto a local branch on your machine.
@@ -53,3 +45,4 @@ That's all for the instructions! Have fun with the app, and good luck catching (
 8. By this point, we've created a new database for the project on your SQL Server and we've added data to it. Now we just have to start the app!
 9. Press Ctrl + F5 to run the app! If you'd like to run in debugger mode instead, press F5 (or the *Play* button marked *IIS Express* at the top of Visual Studio).
 10. Refer to the app usage instructions and enjoy!
+11. Register an account and explore the app!
